@@ -58,7 +58,8 @@ const Settings = ({navigation}) => {
       icon: <Mesageicon />,
       icon1: 'chevron-right',
       IconColor: '#ffff',
-      onPress: () => navigation.navigate(''),
+      // onPress: () => navigation.navigate(''),
+      onPress: () => null,
     },
   ];
   return (

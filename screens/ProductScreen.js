@@ -29,6 +29,7 @@ const ProductScreen = ({navigation, route, index}) => {
     setCount(count + 1);
   };
   const decrement = () => {
+    if (count > 0)
     setCount(count - 1);
   };
   const data = [
