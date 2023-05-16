@@ -17,6 +17,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import {WIDTH, HEIGHT} from '../assets/constants/Dimensions';
 import {Fonts} from '../assets/constants/Fonts';
+import { SafeAreaView } from 'react-native';
 
 let hasNotch = deviceInfoModule.hasNotch();
 
@@ -154,7 +155,7 @@ export default Onboarding;
 
 const Slide = ({item}) => {
   return (
-    <View
+    <SafeAreaView
       style={{
         alignItems: 'center',
         justifyContent: 'center',
@@ -318,7 +319,7 @@ const Slide = ({item}) => {
           </Text>
         </View>
       </ImageBackground>
-    </View>
+    </SafeAreaView>
   );
 };
 const Indicators = ({
