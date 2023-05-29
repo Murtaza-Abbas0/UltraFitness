@@ -28,6 +28,7 @@ const Signup = ({ navigation }) => {
   });
   const [agree, setAgree] = useState(true);
   const handlerSignup = () => {
+    console.log('test')
     if (!agree) {
       console.log('Please check agree mark')
       return;
@@ -36,13 +37,13 @@ const Signup = ({ navigation }) => {
     && data['gender'] !== "" && data['email'] !== ""
     && data['password'] !== "" && data['passwordConfirm'] !== ""
     ) {
-
+      console.log('test1')
       if (data['password'] !== data['passwordConfirm']) {
         console.log('Please enter correct password')
         return;
       }
       CreateAccount(data, { }, (response) => {
-
+        console.log('test3')
         debugger
         const data = settingUpAuth(response)
         debugger

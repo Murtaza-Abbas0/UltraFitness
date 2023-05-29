@@ -10,7 +10,7 @@ export function ValidateEmail(email) {
 }
 export const settingUpAuth = (OBJ) => {
     
-    debugger
+    // debugger
     const { _id, age, email, gender, contactNo, fullName, } = OBJ.data.data.user;
     data = {
         auth: true,

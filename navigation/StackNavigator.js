@@ -24,14 +24,20 @@ import AssismentScreen from '../screens/AssismentScreen';
 import Account from '../screens/Account';
 import TermsConditionScreen from '../screens/TermsConditionScreen';
 import Notification from '../screens/notification';
+import instance from "../https/config";
 
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
   const auth = useSelector(state => state.User.auth);
+  const user = useSelector(state => state.User);
+
+  console.log(`Bearer ${user?.token}`)
+
   const [initialRouteName, setInitialRouteName] = useState("Splash");
   useEffect(() => {
     if (auth) {
       setInitialRouteName("Drawer")
+      instance.defaults.headers.common['Authorization'] = `Bearer ${user?.token}`;
       return;
     }
     setInitialRouteName("Login")

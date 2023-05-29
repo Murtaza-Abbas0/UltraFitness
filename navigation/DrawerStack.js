@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import {Courses, Home, Profile, Shope} from '../screens';
+import React, { useState } from 'react';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Courses, Home, Profile, Shope } from '../screens';
 import {
   FlatList,
   ImageBackground,
@@ -9,18 +9,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
-import {Colors} from '../assets/constants/Colors';
+import { Colors } from '../assets/constants/Colors';
 import Assets from '../assets';
-import {Avatar, TouchableRipple} from 'react-native-paper';
-import {Fonts} from '../assets/constants/Fonts';
+import { Avatar, TouchableRipple } from 'react-native-paper';
+import { Fonts } from '../assets/constants/Fonts';
 import ButtonComponent from '../components/Button';
-import {WIDTH} from '../assets/constants/Dimensions';
+import { WIDTH } from '../assets/constants/Dimensions';
 import MyOrders from '../screens/MyOrder';
 import CartScreen from '../screens/CartScreen';
 import AddcardScreen from '../screens/AddcardScreen';
 import Settings from '../screens/settings';
+import { Logout } from '../https';
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 const DrawerNavigator = () => {
   const Drawer = createDrawerNavigator();
@@ -31,7 +34,7 @@ const DrawerNavigator = () => {
         headerTransparent: true,
         animationTypeForReplace: 'push',
         animation: 'slide_from_right',
-        drawerStyle: {width: '100%'},
+        drawerStyle: { width: '100%' },
       }}
       drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen name="Home" component={Home} />
@@ -51,17 +54,34 @@ export default DrawerNavigator;
 const CustomDrawerContent = props => {
   const [activeButton, setActiveButton] = useState(0);
   const [checked, setChecked] = useState('first');
+
+  const navigation = useNavigation()
+
+  const user = useSelector(state => state.User);
+
+  console.log('user: ', user)
+
+  const onPressLogout = () => {
+    const data = {}; // Set the data object if required
+    const header = {}; // Set the header object if required
+
+    Logout(data, header, (response) => {
+      // console.log(response);
+      if(response?.data?.status == "success" ) 
+      navigation.navigate("Login")
+    });
+  }
   return (
     <ImageBackground
       source={Assets.backgroundImages.menuBackground}
       resizeMode="cover"
       style={styles.image}>
       <SafeAreaView style={styles.container}>
-        <View style={{paddingHorizontal: 15}}>
+        <View style={{ paddingHorizontal: 15 }}>
           <Header navigation={props.navigation} backIcon={true} />
         </View>
-        <View style={{paddingHorizontal: 30, marginTop: 25}}>
-          <View style={{width: 100, marginBottom: 25}}>
+        <View style={{ paddingHorizontal: 30, marginTop: 25 }}>
+          <View style={{ width: 100, marginBottom: 25 }}>
             <TouchableOpacity
               onPress={() => props.navigation.navigate('Profile')}
               style={{
@@ -116,10 +136,10 @@ const CustomDrawerContent = props => {
             // backgroundColor: 'red',
             paddingLeft: 25,
           }}
-          ItemSeparatorComponent={<View style={{marginVertical: -15}} />}
+          ItemSeparatorComponent={<View style={{ marginVertical: -15 }} />}
           data={sidebarData}
           scrollEnabled={false}
-          renderItem={({item, index}) => (
+          renderItem={({ item, index }) => (
             <SidebarButton
               item={item}
               index={index}
@@ -129,14 +149,14 @@ const CustomDrawerContent = props => {
             />
           )}
         />
-        <View style={{paddingLeft: 25, paddingBottom: 10}}>
+        <View style={{ paddingLeft: 25, paddingBottom: 10 }}>
           <ButtonComponent
             borderRadius={50}
             icon="logout"
             buttonText="Logout"
             buttonColor={Colors.secondary}
             textColor={Colors.tertiary}
-            onPress={() => navigation.navigate('Drawer')}
+            onPress={() => onPressLogout()}
             height={WIDTH <= 375 ? 40 : 55}
             width={WIDTH <= 375 ? 125 : 175}
           />
@@ -196,7 +216,7 @@ const SidebarButton = ({
           height: 45,
           borderRadius: 15,
 
-          transform: [{rotate: '6deg'}],
+          transform: [{ rotate: '6deg' }],
         }}
       />
       <View
@@ -208,7 +228,7 @@ const SidebarButton = ({
           width: 300,
           height: 45,
           borderRadius: 15,
-          transform: [{rotate: '-6deg'}],
+          transform: [{ rotate: '-6deg' }],
         }}
       />
       <Text
@@ -232,7 +252,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // backgroundColor: Colors.secondary,
   },
-  image: {flex: 1},
+  image: { flex: 1 },
 });
 
 const sidebarData = [
@@ -257,7 +277,7 @@ const sidebarData = [
     id: 5,
     screen: 'Cart',
   },
-  {id: 6, screen: 'Payment Settings'},
+  { id: 6, screen: 'Payment Settings' },
   {
     id: 7,
     screen: 'Settings',

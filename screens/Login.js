@@ -23,17 +23,20 @@ const Login = ({ navigation }) => {
   });
   const [rememberMe, setRememberMe] = useState(false);
   const handlerSignin = () => {
+    // console.log('Test')
     if (data['email'] !== "" && data['password'] !== "") {
       if (ValidateEmail(data.email)) {
         console.log('Please enter valid email')
         return;
       }
       LoginAuth(data, {}, (response) => {
-        debugger
-        console.log(response)
+        // debugger
+        // console.log(response)
         const data = settingUpAuth(response)
-        debugger
+        console.log('data: ', data)
+        // debugger
         dispatch({ type: signin , data })
+        console.log('Test!')
         navigation.navigate('Drawer')
 
       })

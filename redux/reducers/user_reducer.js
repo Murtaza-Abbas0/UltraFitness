@@ -18,6 +18,11 @@ const User = (state = initialState, action) => {
                 ...state,
                 ...action.data,
             };
+            case signin:
+            return {
+                ...state,
+                ...action.data,
+            };
         case logout:
             return {
                 ...state,
