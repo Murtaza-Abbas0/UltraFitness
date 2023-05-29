@@ -1,27 +1,63 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Colors} from '../assets/constants/Colors';
-import {FAB} from 'react-native-paper';
-import {WIDTH} from '../assets/constants/Dimensions';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Colors } from '../assets/constants/Colors';
+import { FAB } from 'react-native-paper';
+import { WIDTH } from '../assets/constants/Dimensions';
 import Assets from '../assets';
-import {Fonts} from '../assets/constants/Fonts';
+import { Fonts } from '../assets/constants/Fonts';
 import Input from '../components/Input';
 import Icon from 'react-native-vector-icons/Feather';
 import ButtonComponent from '../components/Button';
+import { ValidateEmail, settingUpAuth, } from '../helper';
+import { CreateAccount } from '../https';
+import { signup } from '../redux/actions';
+import { useDispatch } from 'react-redux'
 
-const Signup = ({navigation}) => {
+const dispatch = useDispatch()
+const Signup = ({ navigation }) => {
   const [data, setData] = useState({
-    fullName: '',
-    contactNo: '',
-    gender: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    fullName: 'dawood user',
+    contactNo: '+92357456454',
+    gender: 'male',
+    "age": 52,
+    email: 'dawooduser019510@mailinator.com',
+    password: 'dawooduser123456',
+    passwordConfirm: 'dawooduser123456',
   });
-  const [agree, setAgree] = useState(false);
+  const [agree, setAgree] = useState(true);
+  const handlerSignup = () => {
+    if (!agree) {
+      console.log('Please check agree mark')
+      return;
+    }
+    if (data['fullName'] !== "" && data['contactNo'] !== ""
+    && data['gender'] !== "" && data['email'] !== ""
+    && data['password'] !== "" && data['passwordConfirm'] !== ""
+    ) {
 
+      if (data['password'] !== data['passwordConfirm']) {
+        console.log('Please enter correct password')
+        return;
+      }
+      CreateAccount(data, { }, (response) => {
+
+        debugger
+        const data = settingUpAuth(response)
+        debugger
+        // const {id, age, email, gender, contactNo, fullName, } = response.data.data.user;
+        // data = {
+        //   auth: true,
+        //   token: response.data.token,
+        //   id, age, email, gender, contactNo, fullName
+        // }
+        dispatch({ type: signup, data })
+        debugger
+        navigation.goBack()
+      })
+    }
+  }
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView
@@ -30,7 +66,7 @@ const Signup = ({navigation}) => {
         enableAutomaticScroll={true}
         bounces={false}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{flexGrow: 1, paddingHorizontal: 25}}>
+        contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 25 }}>
         <HeaderComponent navigation={navigation} />
         <View style={styles.loginTextContainer}>
           <Text style={styles.loginText}>Sign Up</Text>
@@ -48,23 +84,24 @@ const Signup = ({navigation}) => {
           textColor={Colors.primary}
           backgroundColor={'#FFFFFF'}
         />
-        <View style={{marginVertical: 10}} />
+        <View style={{ marginVertical: 10 }} />
         <Input
           placeholder="Contact No"
           text={data.contactNo}
           setText={setData}
+          keyboardType={'phone-pad'}
           formKey="contactNo"
           textColor={Colors.primary}
           backgroundColor={'#FFFFFF'}
         />
-        <View style={{marginVertical: 10}} />
+        <View style={{ marginVertical: 10 }} />
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <View style={{marginVertical: 10, width: '45%'}}>
+          <View style={{ marginVertical: 10, width: '45%' }}>
             <Input
               selection
               menu2={true}
@@ -81,17 +118,16 @@ const Signup = ({navigation}) => {
               backgroundColor={'#FFFFFF'}
             />
           </View>
-          <View style={{marginVertical: 10, width: '45%'}}>
-            <Input
-              color={Colors.primary}
-              color2={Colors.tertiary}
-              gender={true}
-              text={data.gender}
-              setText={setData}
-              formKey="gender"
-              textColor={Colors.primary}
-              backgroundColor={'#FFFFFF'}
-            />
+          <View style={{ marginVertical: 10, width: '45%' }}>
+          <Input
+          placeholder="Age"
+          text={data.age}
+          setText={setData}
+          keyboardType={'phone-pad'}
+          formKey="age"
+          textColor={Colors.primary}
+          backgroundColor={'#FFFFFF'}
+        />
           </View>
         </View>
         <Input
@@ -102,7 +138,7 @@ const Signup = ({navigation}) => {
           textColor={Colors.primary}
           backgroundColor={'#FFFFFF'}
         />
-        <View style={{marginVertical: 10}} />
+        <View style={{ marginVertical: 10 }} />
         <Input
           placeholder="Password"
           text={data.password}
@@ -111,12 +147,12 @@ const Signup = ({navigation}) => {
           textColor={Colors.primary}
           backgroundColor={'#FFFFFF'}
         />
-        <View style={{marginVertical: 10}} />
+        <View style={{ marginVertical: 10 }} />
         <Input
           placeholder="Confirm Password"
-          text={data.confirmPassword}
+          text={data.passwordConfirm}
           setText={setData}
-          formKey="confirmPassword"
+          formKey="passwordConfirm"
           textColor={Colors.primary}
           backgroundColor={'#FFFFFF'}
         />
@@ -128,9 +164,9 @@ const Signup = ({navigation}) => {
             size={20}
             color={agree ? Colors.primary : Colors.tertiary}
           />
-          <Text style={[styles.text, {marginLeft: 5}]} numberOfLines={1}>
+          <Text style={[styles.text, { marginLeft: 5 }]} numberOfLines={1}>
             I Agree with all{' '}
-            <Text style={{color: Colors.primary}}>Terms & Conditions</Text>
+            <Text style={{ color: Colors.primary }}>Terms & Conditions</Text>
           </Text>
         </TouchableOpacity>
         <View
@@ -144,7 +180,7 @@ const Signup = ({navigation}) => {
             buttonText="Sign Up"
             buttonColor={Colors.primary}
             textColor={Colors.secondary}
-            onPress={() => navigation.goBack()}
+            onPress={() => handlerSignup()}
             height={WIDTH <= 375 ? 40 : 55}
             width={WIDTH <= 375 ? 125 : 175}
           />
@@ -156,7 +192,7 @@ const Signup = ({navigation}) => {
 
 export default Signup;
 
-const HeaderComponent = ({navigation}) => {
+const HeaderComponent = ({ navigation }) => {
   return (
     <View style={styles.headerContainer}>
       <FAB

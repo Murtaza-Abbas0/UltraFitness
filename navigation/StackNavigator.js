@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import {useSelector, useDispatch} from 'react-redux'
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Login, Onboarding, Signup, Home, Profile, Shope} from '../screens';
 import DrawerNavigator from './DrawerStack';
@@ -26,6 +27,15 @@ import Notification from '../screens/notification';
 
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
+  const auth = useSelector(state => state.User.auth);
+  const [initialRouteName, setInitialRouteName] = useState("Splash");
+  useEffect(() => {
+    if (auth) {
+      setInitialRouteName("Drawer")
+      return;
+    }
+    setInitialRouteName("Login")
+  },[auth])
   return (
     <Stack.Navigator
       screenOptions={{
@@ -34,7 +44,7 @@ const StackNavigator = () => {
         animationTypeForReplace: 'push',
         animation: 'slide_from_right',
       }}
-      initialRouteName="Splash">
+      initialRouteName={initialRouteName}>
       <Stack.Screen name="Onboarding" component={Onboarding} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />

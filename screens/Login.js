@@ -10,13 +10,35 @@ import Input from '../components/Input';
 import Icon from 'react-native-vector-icons/Feather';
 import ButtonComponent from '../components/Button';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { LoginAuth } from '../https';
+import { ValidateEmail, settingUpAuth } from '../helper';
+import { signin } from '../redux/actions';
+import { useDispatch } from 'react-redux'
 
+const dispatch = useDispatch()
 const Login = ({ navigation }) => {
   const [data, setData] = useState({
-    username: '',
-    password: '',
+    email: 'dawooduser019510@mailinator.com',
+    password: 'dawooduser123456',
   });
   const [rememberMe, setRememberMe] = useState(false);
+  const handlerSignin = () => {
+    if (data['email'] !== "" && data['password'] !== "") {
+      if (ValidateEmail(data.email)) {
+        console.log('Please enter valid email')
+        return;
+      }
+      LoginAuth(data, {}, (response) => {
+        debugger
+        console.log(response)
+        const data = settingUpAuth(response)
+        debugger
+        dispatch({ type: signin , data })
+        navigation.navigate('Drawer')
+
+      })
+    }
+  }
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView
@@ -69,11 +91,10 @@ const Login = ({ navigation }) => {
           </View>
           <View style={{ marginVertical: 5 }} />
           <Input
-
-            placeholder="Username"
-            text={data.username}
+            placeholder="email"
+            text={data.email}
             setText={setData}
-            formKey="username"
+            formKey="email"
             textColor={Colors.primary}
             backgroundColor={'#FFFFFF'}
           />
@@ -125,7 +146,7 @@ const Login = ({ navigation }) => {
               buttonText="Login"
               buttonColor={Colors.primary}
               textColor={Colors.secondary}
-              onPress={() => navigation.navigate('Drawer')}
+              onPress={() => handlerSignin()}
               height={WIDTH <= 375 ? 40 : 55}
               width={WIDTH <= 375 ? 125 : 175}
             />

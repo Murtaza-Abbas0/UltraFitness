@@ -17,6 +17,7 @@ const Input = ({
   backgroundColor,
   icon1,
   icon2,
+  keyboardType= 'default'
 }) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const onChangeHandler = (value, name) => {
@@ -38,6 +39,7 @@ const Input = ({
         <TextInput
           placeholder={placeholder}
           value={text}
+          keyboardType={keyboardType}
           onChangeText={text => onChangeHandler(text, formKey)}
           // left={
           //   icon1 ? (
