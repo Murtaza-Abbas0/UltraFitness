@@ -6,22 +6,26 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {HEIGHT, WIDTH} from '../assets/constants/Dimensions';
-import {Fonts} from '../assets/constants/Fonts';
-import {Colors} from '../assets/constants/Colors';
+import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { HEIGHT, WIDTH } from '../assets/constants/Dimensions';
+import { Fonts } from '../assets/constants/Fonts';
+import { Colors } from '../assets/constants/Colors';
 import RatingsItems from '../components/RatingsItems';
 import ButtonComponent2 from '../components/Botton2';
-import {FAB, TouchableRipple} from 'react-native-paper';
-import {BackSvg} from '../assets/svgs/HeaderSvgs';
+import { FAB, TouchableRipple } from 'react-native-paper';
+import { BackSvg } from '../assets/svgs/HeaderSvgs';
 import Mymodal from '../components/Popup';
-import {CartICon, Trashicon} from '../assets/svgs/HomeSvgs';
+import { CartICon, Trashicon } from '../assets/svgs/HomeSvgs';
 import ButtonComponent from '../components/Button';
-import {color} from 'react-native-reanimated';
+import { color } from 'react-native-reanimated';
 
-const ProductScreen = ({navigation, route, index}) => {
-  const {ProductImaig1} = route.params;
+const urlForImages = `https://hr-management-development.s3.eu-west-2.amazonaws.com/`
+
+const ProductScreen = ({ navigation, route, index }) => {
+  const { data } = route.params;
+
+  console.log('data: ', data)
 
   const [count, setCount] = useState(5);
 
@@ -30,13 +34,13 @@ const ProductScreen = ({navigation, route, index}) => {
   };
   const decrement = () => {
     if (count > 0)
-    setCount(count - 1);
+      setCount(count - 1);
   };
-  const data = [
-    {imageitem: ProductImaig1},
-    {imageitem: ProductImaig1},
-    {imageitem: ProductImaig1},
-  ];
+  // const data1 = [
+  //   {imageitem: ProductImaig1},
+  //   {imageitem: ProductImaig1},
+  //   {imageitem: ProductImaig1},
+  // ];
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <>
@@ -44,7 +48,7 @@ const ProductScreen = ({navigation, route, index}) => {
         <ScrollView
           bounces={false}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{flexGrow: 1}}>
+          contentContainerStyle={{ flexGrow: 1 }}>
           <View
             style={{
               paddingTop: 25,
@@ -60,23 +64,33 @@ const ProductScreen = ({navigation, route, index}) => {
                 flex: 1,
                 //   backgroundColor: 'green',
               }}>
-              <View style={{alignSelf: 'center', padding: 25}}>
+              <View style={{
+                // alignSelf: 'center',
+                alignItems: 'center',
+                justifyContent: 'center',
+                // backgroundColor: 'pink',
+                width: '100%',
+                height: '100%'
+              }}>
                 <Image
-                  source={ProductImaig1}
-                  resizeMode="contain"
+                  source={{ uri: `${urlForImages}${data?.images[0]}` }}
                   style={{
-                    height: WIDTH <= 375 ? 180 : 276,
+                    height: '100%',
+                    // width: WIDTH <= 323 ? 180 : 276,
                     width: WIDTH <= 323 ? 180 : 276,
-                    marginRight: index % 5 == 2 ? 0 : 0,
-                    marginLeft: index % 5 == 0 ? 0 : 0,
+                    resizeMode: "cover",
+                    backgroundColor: 'pink'
+                    // marginRight: index % 5 == 2 ? 0 : 0,
+                    // marginLeft: index % 5 == 0 ? 0 : 0,
                   }}
                 />
               </View>
               <FlatList
                 horizontal
                 showsHorizontalScrollIndicator={true}
-                data={data}
+                data={data?.images}
                 renderItem={({item, index}) => {
+                  console.log('item: ', item)
                   return (
                     <>
                       <View
@@ -87,7 +101,7 @@ const ProductScreen = ({navigation, route, index}) => {
                           marginLeft: index % 5 == 0 ? 0 : 3,
                         }}>
                         <Image
-                          source={item.imageitem}
+                          source={`${urlForImages}${item.images}`}
                           resizeMode="contain"
                           style={{width: '100%', height: '100%'}}
                         />
@@ -100,9 +114,9 @@ const ProductScreen = ({navigation, route, index}) => {
             <View style={{}}>
               <View style={styles.line} />
               <View
-                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View>
-                  <Text style={[styles.CenterText, {color: '#00B4D8'}]}>
+                  <Text style={[styles.CenterText, { color: '#00B4D8' }]}>
                     Home Equipment {'\n'}Push Up Bars
                   </Text>
                 </View>
@@ -117,21 +131,21 @@ const ProductScreen = ({navigation, route, index}) => {
                         // marginRight: 5,
                       },
                     ]}>
-                    120<Text style={{fontSize: 20}}>$</Text>
+                    120<Text style={{ fontSize: 20 }}>$</Text>
                   </Text>
                 </View>
               </View>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{ flexDirection: 'row' }}>
                 <Text
-                  style={[styles.CenterText, {color: '#000', fontSize: 16}]}>
+                  style={[styles.CenterText, { color: '#000', fontSize: 16 }]}>
                   Reviews :
                 </Text>
-                <View style={{marginTop: 3}}>
+                <View style={{ marginTop: 3 }}>
                   <RatingsItems />
                 </View>
               </View>
               <Text
-                style={[styles.CenterText, {color: '#000', fontSize: 16}]}
+                style={[styles.CenterText, { color: '#000', fontSize: 16 }]}
                 numberOfLines={1}>
                 Description :
               </Text>
@@ -229,7 +243,7 @@ const ProductScreen = ({navigation, route, index}) => {
                 </View>
               </View>
 
-              <View style={{flex: 1, paddingLeft: 5}}>
+              <View style={{ flex: 1, paddingLeft: 5 }}>
                 <ButtonComponent2
                   buttonText={count}
                   buttonColor={'#7E7C7B30'}
@@ -240,8 +254,8 @@ const ProductScreen = ({navigation, route, index}) => {
                 />
               </View>
             </View>
-            <View style={{paddingBottom: 15}}>
-              <View style={{flexDirection: 'row'}}>
+            <View style={{ paddingBottom: 15 }}>
+              <View style={{ flexDirection: 'row' }}>
                 <ButtonComponent
                   icon1={true}
                   buttonI={<Trashicon />}
@@ -253,7 +267,7 @@ const ProductScreen = ({navigation, route, index}) => {
                   height={WIDTH <= 375 ? 55 : 68}
                   width={WIDTH <= 375 ? 160 : 164}
                 />
-                <View style={{flex: 1, paddingLeft: 5}}>
+                <View style={{ flex: 1, paddingLeft: 5 }}>
                   <ButtonComponent
                     icon1={true}
                     buttonI={<CartICon />}
@@ -261,7 +275,7 @@ const ProductScreen = ({navigation, route, index}) => {
                     buttonText="Buy Now"
                     buttonColor={Colors.primary}
                     textColor={'#fff'}
-                    onPress={() => navigation.goBack()}
+                    onPress={() => navigation.navigate("GoogleMapsScreen")}
                     height={WIDTH <= 375 ? 55 : 68}
                     width={WIDTH <= 375 ? 160 : 164}
                   />
@@ -286,7 +300,7 @@ const ProductScreen = ({navigation, route, index}) => {
   );
 };
 
-const HeaderComponent = ({navigation}) => {
+const HeaderComponent = ({ navigation }) => {
   return (
     <View style={{}}>
       <TouchableRipple

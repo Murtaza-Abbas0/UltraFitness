@@ -146,7 +146,7 @@ const Products = ({}) => {
             navigation.navigate("ProductSCreen", {data: item})
           }
 
-        console.log('item: ', item?.images[0])
+        // console.log('item: ', item?.images[0])
         return (
           <TouchableOpacity
             onPress={()=> onPressProduct(item)}

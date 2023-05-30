@@ -14,7 +14,7 @@ const ProductCard = ({
   fontWeight,
   color,
 }) => {
-  console.log(image);
+  // console.log(image);
   return (
     <TouchableOpacity
       style={[
