@@ -17,16 +17,17 @@ const Input = ({
   backgroundColor,
   icon1,
   icon2,
-  keyboardType= 'default'
+  keyboardType= 'default',
+  onChangeHandler
 }) => {
   const [showDropDown, setShowDropDown] = useState(false);
-  const onChangeHandler = (value, name) => {
-    // how to handle for each state field
-    setText(form => ({
-      ...form,
-      [name]: value,
-    }));
-  };
+  // const onChangeHandler = (value, name) => {
+  //   // how to handle for each state field
+  //   setText(form => ({
+  //     ...form,
+  //     [name]: value,
+  //   }));
+  // };
   return (
     <>
       {gender ? (

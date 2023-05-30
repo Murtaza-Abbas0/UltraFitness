@@ -1,38 +1,80 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Colors} from '../assets/constants/Colors';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from '../assets/constants/Colors';
 import Header from '../components/Header';
-import {HEIGHT, WIDTH} from '../assets/constants/Dimensions';
-import {Fonts} from '../assets/constants/Fonts';
+import { HEIGHT, WIDTH } from '../assets/constants/Dimensions';
+import { Fonts } from '../assets/constants/Fonts';
 import ButtonComponent from '../components/Button';
 import Input from '../components/Input';
-import MapView, {Marker} from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import Radiobutton from '../components/Radiobutton';
+import { useSelector } from 'react-redux';
 
-const GoogleMapsScreen = ({navigation}) => {
+const GoogleMapsScreen = ({ navigation, route }) => {
+
+  let { orderData } = route?.params
+  let tempObject = {}
+
+  const user = useSelector(state => state.User);
+
+  console.log('orderData: ', orderData)
+
   const [checked, setChecked] = useState();
   const [data, setData] = useState({
-    fullName: '',
-    contactNo: '',
-    gender: '',
-    email: '',
+    fullName: user?.fullName,
+    contactNo: user?.contactNo,
+    gender: user?.gender,
+    email: user?.email,
     password: '',
     confirmPassword: '',
+    address: '',
+    zipCode: '',
+    city: '',
+    state: ''
   });
+
+
   const [region, setRegion] = useState({
     latitude: 77.78825,
     longitude: 122.324,
     latitudeDelta: 2.0922,
     longitudeDelta: 8.0421,
   });
+
+  const getOrderObject = () => {
+    tempObject = {
+      orderData,
+      "totalPrice": orderData[0]?.price,
+      "fullName": data.fullName,
+      "address": data.address,
+      "zipCode": data.zipCode,
+      "city": data.city,
+      "state": data.state,
+      "phoneNumber": data.contactNo,
+      "email": data.email,
+      "gender": data.gender
+    }
+
+    console.log('tempObject: ', tempObject)
+    return
+    navigation.navigate('CheckoutCart')
+  }
+
+  const onChangeHandler = (value, name) => {
+    setData(prevData => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
         bounces={false}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{flexGrow: 1}}>
-        <View style={{flex: 1, paddingHorizontal: 25}}>
+        contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={{ flex: 1, paddingHorizontal: 25 }}>
           <Header
             navigation={navigation}
             onlybackbutton
@@ -45,10 +87,10 @@ const GoogleMapsScreen = ({navigation}) => {
               style={styles.map}
               region={region}
               onRegionChange={setRegion}>
-              <Marker coordinate={{latitude: 37.78825, longitude: -122.4324}} />
+              <Marker coordinate={{ latitude: 37.78825, longitude: -122.4324 }} />
             </MapView>
           </View>
-          <View style={{marginTop: 25}} />
+          <View style={{ marginTop: 25 }} />
           <Input
             placeholder="Full Name"
             text={data.fullName}
@@ -56,55 +98,61 @@ const GoogleMapsScreen = ({navigation}) => {
             formKey="fullName"
             textColor={Colors.tertiary}
             backgroundColor={'#ffffff'}
+            onChangeHandler={onChangeHandler}
           />
-          <View style={{marginTop: 25}} />
+          <View style={{ marginTop: 25 }} />
           <Input
             placeholder="Address"
-            text={data.fullName}
+            text={data.address}
             setText={setData}
-            formKey="Address"
+            formKey="address"
             textColor={Colors.tertiary}
             backgroundColor={'#ffffff'}
+            onChangeHandler={onChangeHandler}
           />
-          <View style={{marginTop: 25}} />
+          <View style={{ marginTop: 25 }} />
           <Input
             placeholder="Zip code "
-            text={data.fullName}
+            text={data.zipCode}
             setText={setData}
-            formKey="Zip Code"
+            formKey="zipCode"
             textColor={Colors.tertiary}
             backgroundColor={'#ffffff'}
+            onChangeHandler={onChangeHandler}
           />
-          <View style={{marginTop: 25}}>
+          <View style={{ marginTop: 25 }}>
             <Input
               placeholder="City"
-              text={data.fullName}
+              text={data.city}
               setText={setData}
               formKey="city"
               textColor={Colors.tertiary}
               backgroundColor={'#ffffff'}
+              onChangeHandler={onChangeHandler}
             />
           </View>
-          <View style={{marginTop: 25}}>
+          <View style={{ marginTop: 25 }}>
             <Input
               placeholder="state"
-              text={data.fullName}
+              text={data.state}
               setText={setData}
               formKey="state"
               textColor={Colors.tertiary}
               backgroundColor={'#ffffff'}
+              onChangeHandler={onChangeHandler}
             />
           </View>
-          <View style={{marginTop: 25}} />
+          <View style={{ marginTop: 25 }} />
           <Input
             placeholder="phone number "
-            text={data.fullName}
+            text={data.contactNo}
             setText={setData}
-            formKey="phone number "
+            formKey="contactNo"
             textColor={Colors.tertiary}
             backgroundColor={'#ffffff'}
+            onChangeHandler={onChangeHandler}
           />
-          <View style={{marginTop: 25}} />
+          <View style={{ marginTop: 25 }} />
           <View
             style={
               {
@@ -122,16 +170,18 @@ const GoogleMapsScreen = ({navigation}) => {
               textColor={Colors.primary}
               Valueinput={'State'}
               backgroundColor={'#ffffff'}
+              onChangeHandler={onChangeHandler}
             />
           </View>
-          <View style={{marginTop: 25}} />
+          <View style={{ marginTop: 25 }} />
           <Input
             placeholder="Email"
-            text={data.fullName}
+            text={data.email}
             setText={setData}
             formKey="Email"
             textColor={Colors.tertiary}
             backgroundColor={'#ffffff'}
+            onChangeHandler={onChangeHandler}
           />
         </View>
         <View
@@ -142,10 +192,10 @@ const GoogleMapsScreen = ({navigation}) => {
             paddingHorizontal: 25,
           }}>
           <Text
-            style={[styles.text, {fontWeight: 'bold', paddingVertical: 10}]}>
+            style={[styles.text, { fontWeight: 'bold', paddingVertical: 10 }]}>
             Payment Method
           </Text>
-          <View style={{flexDirection: 'row', paddingTop: 10}}>
+          <View style={{ flexDirection: 'row', paddingTop: 10 }}>
             <Radiobutton
               onPress={() => setChecked(!checked)}
               checked={checked}
@@ -154,12 +204,12 @@ const GoogleMapsScreen = ({navigation}) => {
             <Text
               style={[
                 styles.text,
-                {fontSize: 14, color: '#4A4A4A', paddingTop: 8},
+                { fontSize: 14, color: '#4A4A4A', paddingTop: 8 },
               ]}>
               Credit Card
             </Text>
           </View>
-          <View style={{flexDirection: 'row', paddingTop: 10}}>
+          <View style={{ flexDirection: 'row', paddingTop: 10 }}>
             <Radiobutton
               onPress={() => setChecked(!checked)}
               checked={checked}
@@ -168,7 +218,7 @@ const GoogleMapsScreen = ({navigation}) => {
             <Text
               style={[
                 styles.text,
-                {fontSize: 14, color: '#4A4A4A', paddingTop: 8},
+                { fontSize: 14, color: '#4A4A4A', paddingTop: 8 },
               ]}>
               Debit Card
             </Text>
@@ -186,7 +236,7 @@ const GoogleMapsScreen = ({navigation}) => {
             buttonText="Continue"
             buttonColor={Colors.tertiary}
             textColor={Colors.secondary}
-            onPress={() => navigation.navigate('CheckoutCart')}
+            onPress={() => getOrderObject()}
             height={WIDTH <= 375 ? 55 : 55}
             width={WIDTH <= 323 ? 260 : 300}
           />

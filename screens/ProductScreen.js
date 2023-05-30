@@ -6,7 +6,7 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { HEIGHT, WIDTH } from '../assets/constants/Dimensions';
 import { Fonts } from '../assets/constants/Fonts';
@@ -25,9 +25,18 @@ const urlForImages = `https://hr-management-development.s3.eu-west-2.amazonaws.c
 const ProductScreen = ({ navigation, route, index }) => {
   const { data } = route.params;
 
-  console.log('data: ', data)
+  // console.log('data: ', data)
 
-  const [count, setCount] = useState(5);
+  let tempArr = []
+
+  useEffect(() => {
+    setProductData(data)
+    getProductArray()
+    console.log('tempArr in useEffect: ', tempArr)
+  }, [tempArr])
+
+  const [count, setCount] = useState(0);
+  const [productData, setProductData] = useState(data);
 
   const increment = () => {
     setCount(count + 1);
@@ -36,6 +45,27 @@ const ProductScreen = ({ navigation, route, index }) => {
     if (count > 0)
       setCount(count - 1);
   };
+
+  const getProductArray = () => {
+    tempArr.push(
+      {
+        "productId": productData?._id,
+        "quantity": count,
+        "price": count * productData?.price
+      },
+    )
+  }
+
+
+  const onPressBuyNow = () => {
+    console.log('tempArr in buy now func: ', tempArr)
+    if (tempArr?.price != 0) {
+      navigation.navigate("GoogleMapsScreen", { orderData: tempArr })
+    } else {
+      console.log('Price is 0')
+    }
+  }
+
   // const data1 = [
   //   {imageitem: ProductImaig1},
   //   {imageitem: ProductImaig1},
@@ -89,8 +119,8 @@ const ProductScreen = ({ navigation, route, index }) => {
                 horizontal
                 showsHorizontalScrollIndicator={true}
                 data={data?.images}
-                renderItem={({item, index}) => {
-                  console.log('item: ', item)
+                renderItem={({ item, index }) => {
+                  // console.log('item: ', item)
                   return (
                     <>
                       <View
@@ -103,7 +133,7 @@ const ProductScreen = ({ navigation, route, index }) => {
                         <Image
                           source={`${urlForImages}${item.images}`}
                           resizeMode="contain"
-                          style={{width: '100%', height: '100%'}}
+                          style={{ width: '100%', height: '100%' }}
                         />
                       </View>
                     </>
@@ -275,7 +305,7 @@ const ProductScreen = ({ navigation, route, index }) => {
                     buttonText="Buy Now"
                     buttonColor={Colors.primary}
                     textColor={'#fff'}
-                    onPress={() => navigation.navigate("GoogleMapsScreen")}
+                    onPress={() => onPressBuyNow()}
                     height={WIDTH <= 375 ? 55 : 68}
                     width={WIDTH <= 375 ? 160 : 164}
                   />
