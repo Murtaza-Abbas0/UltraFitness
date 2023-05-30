@@ -8,7 +8,39 @@ import {Fonts} from '../assets/constants/Fonts';
 import CartItems from '../components/CartITems';
 import Icon from 'react-native-vector-icons/Feather';
 import Assets from '../assets';
+import { getMyOrders } from '../https';
+import { useFocusEffect } from '@react-navigation/native';
+
 const MyOrders = ({navigation, route}) => {
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        await getOrdersFromServer();
+      };
+  
+      fetchData();
+  
+      return () => {
+        // Cleanup function if needed
+      };
+    }, [])
+  );
+
+  const getOrdersFromServer = () => {
+    const data = {};
+    const header = {};
+  
+    getMyOrders(data, header, (response) => {
+      // console.log('response: ', response?.data?.status);
+      if(response?.data?.status == 'success'){
+        // 
+      } else {
+        //
+      }
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView

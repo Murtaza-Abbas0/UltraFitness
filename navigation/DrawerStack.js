@@ -62,8 +62,8 @@ const CustomDrawerContent = props => {
   console.log('user: ', user)
 
   const onPressLogout = () => {
-    const data = {}; // Set the data object if required
-    const header = {}; // Set the header object if required
+    const data = {}
+    const header = {} 
 
     Logout(data, header, (response) => {
       // console.log(response);
