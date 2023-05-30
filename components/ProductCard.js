@@ -4,7 +4,7 @@ import { Fonts } from '../assets/constants/Fonts';
 import { WIDTH } from '../assets/constants/Dimensions';
 import { Colors } from '../assets/constants/Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const ProductCard = ({
   name,
   image,
@@ -26,13 +26,9 @@ const ProductCard = ({
       ]}>
       <View style={styles.productImage}>
         <Image
-          source={image}
-          resizeMode="contain"
-          style={{
-            width: WIDTH / 4.5,
-            height: WIDTH / 4.5,
-            marginLeft: 'auto',
-          }}
+          source={{ uri: image }}
+          // resizeMode="contain"
+          style={styles.imageContainer}
         />
       </View>
       <View style={{ height: '55%' }}>
@@ -103,4 +99,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.tertiary,
   },
+  imageContainer: {
+    // backgroundColor: 'pink',
+    // width: '100%',
+    // height: '100%',
+    flex: 1,
+    resizeMode: 'cover'
+  }
 });

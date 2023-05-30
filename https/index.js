@@ -34,4 +34,10 @@ export const getMyOrders = (data = {}, header = {}, cb) => {
   
     httpGetRequest(url, header, cb);
   };
+
+export const getAllProducts = (data = {}, header = {}, cb) => {
+    const url = `/products`;
+  
+    httpGetRequest(url, header, cb);
+  };
   
