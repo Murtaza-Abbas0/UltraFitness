@@ -25,7 +25,7 @@ const urlForImages = `https://hr-management-development.s3.eu-west-2.amazonaws.c
 const ProductScreen = ({ navigation, route, index }) => {
   const { data } = route.params;
 
-  // console.log('data: ', data)
+  console.log('data: ', data)
 
   let tempArr = []
 
@@ -147,7 +147,7 @@ const ProductScreen = ({ navigation, route, index }) => {
                 style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View>
                   <Text style={[styles.CenterText, { color: '#00B4D8' }]}>
-                    Home Equipment {'\n'}Push Up Bars
+                   {data?.name}
                   </Text>
                 </View>
                 <View style={{}}>
@@ -171,7 +171,7 @@ const ProductScreen = ({ navigation, route, index }) => {
                   Reviews :
                 </Text>
                 <View style={{ marginTop: 3 }}>
-                  <RatingsItems />
+                  <RatingsItems averageRating={data?.averageRating} />
                 </View>
               </View>
               <Text
@@ -191,8 +191,7 @@ const ProductScreen = ({ navigation, route, index }) => {
                   },
                 ]}
                 numberOfLines={2}>
-                Lorem ipsum dolor sit amet, consetetur sscing elitr, sed diam
-                nonumy eirmod tempor
+                {data?.description}
               </Text>
               <Text
                 style={[

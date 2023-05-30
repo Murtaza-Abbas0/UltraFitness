@@ -101,7 +101,7 @@ const Products = ({}) => {
     const header = {};
   
     getAllProducts(data, header, (response) => {
-      // console.log('response: ', response?.data?.data);
+      console.log('response: ', response?.data?.data);
       if(response?.data?.status == 'success'){
         setData(response?.data?.data)
       } else {
@@ -146,7 +146,8 @@ const Products = ({}) => {
             navigation.navigate("ProductSCreen", {data: item})
           }
 
-        // console.log('item: ', item?.images[0])
+        // console.log('item: ', item)
+        // console.log('data: ', data)
         return (
           <TouchableOpacity
             onPress={()=> onPressProduct(item)}
