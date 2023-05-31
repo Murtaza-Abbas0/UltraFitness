@@ -15,12 +15,11 @@ export default class AlertMessage extends Component {
       autoHide: true,
       duration: 2500,
       position: "top",
-      backgroundColor: '',
-      color: Colors.onPrimaryColor,
+      backgroundColor: 'white',
+      color: 'black',
       style: {
         padding: SCREEN_WIDTH / 80,
       },
     });
   };
-
 }
