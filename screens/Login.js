@@ -14,6 +14,7 @@ import { LoginAuth } from '../https';
 import { ValidateEmail, settingUpAuth } from '../helper';
 import { signin } from '../redux/actions';
 import { useDispatch } from 'react-redux'
+import AlertMessage from '../components/AlertMessage'
 
 const dispatch = useDispatch()
 const Login = ({ navigation }) => {
@@ -37,6 +38,7 @@ const Login = ({ navigation }) => {
         // debugger
         dispatch({ type: signin , data })
         console.log('Test!')
+        AlertMessage.showMessage('Login Successfuly')
         navigation.navigate('Drawer')
 
       })
