@@ -9,6 +9,7 @@ import { store, persistor } from './redux';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react'
 import FlashMessage from "react-native-flash-message";
+import { StripeProvider } from '@stripe/stripe-react-native';
 
 
 export default function App() {
@@ -16,17 +17,23 @@ export default function App() {
   const myLocalFlashMessage = useRef(null)
 
   return (
-    <Provider store={store}>
-      <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
-        <SafeAreaProvider>
-          <PaperProvider>
-            <GestureHandlerRootView style={{ flex: 1 }}>
-              <RootStack />
-              <FlashMessage ref={myLocalFlashMessage} />
-            </GestureHandlerRootView>
-          </PaperProvider>
-        </SafeAreaProvider>
-      </PersistGate>
-    </Provider>
+    <StripeProvider
+      publishableKey="pk_test_51Lu2eNG7d6LAhtrknXabAfTeJIhWjf3diLSSLCJ6eKksP7f5JBPfioMB8nPHqDZv9CVeeAkNACezvu8r1tqbMwPt00NSPkCsoV"
+      // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+      // merchantIdentifier="merchant.com.{{YOUR_APP_NAME}}" // required for Apple Pay
+    >
+      <Provider store={store}> 
+        <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+          <SafeAreaProvider>
+            <PaperProvider>
+              <GestureHandlerRootView style={{ flex: 1 }}>
+                <RootStack />
+                <FlashMessage ref={myLocalFlashMessage} />
+              </GestureHandlerRootView>
+            </PaperProvider>
+          </SafeAreaProvider>
+        </PersistGate>
+      </Provider>
+    </StripeProvider>
   );
 }

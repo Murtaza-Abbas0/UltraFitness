@@ -21,6 +21,8 @@ const ButtonComponent = ({
   borderRadius,
   btnfonSize,
   buttonI,
+  marginBottom,
+  alignSelf
 }) => {
   return (
     <TouchableRipple
@@ -33,6 +35,8 @@ const ButtonComponent = ({
           width: width,
           backgroundColor: buttonColor,
           borderRadius: borderRadius,
+          marginBottom: marginBottom,
+          alignSelf: alignSelf
         },
       ]}>
       <View

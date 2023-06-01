@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../assets/constants/Colors';
@@ -10,9 +10,13 @@ import Input from '../components/Input';
 import MapView, { Marker } from 'react-native-maps';
 import Radiobutton from '../components/Radiobutton';
 import { useSelector } from 'react-redux';
-
+import { CardField, useStripe } from '@stripe/stripe-react-native';
+import axios from 'axios';
+import { useEffect } from 'react';
+import PaymentMethod from '../components/PaymentMethod';
 const GoogleMapsScreen = ({ navigation, route }) => {
 
+  const stripe = useStripe();
   let { orderData } = route?.params
   let tempObject = {}
 
@@ -41,6 +45,7 @@ const GoogleMapsScreen = ({ navigation, route }) => {
     latitudeDelta: 2.0922,
     longitudeDelta: 8.0421,
   });
+  const [cardDetails, setCardDetails] = useState()
 
   const getOrderObject = () => {
     tempObject = {
@@ -68,9 +73,44 @@ const GoogleMapsScreen = ({ navigation, route }) => {
     }));
   };
 
+  const createPaymentIntent = async () => {
+    console.log('cardDetails: ', cardDetails)
+    cardDetailsToSend = {
+
+    }
+    // return
+    try {
+      await stripe
+        .createPaymentMethod({
+          type: 'card',
+          card: {
+            number: '5555555555554444', // Replace with actual card number
+            exp_month: '02',
+            exp_year: '40',
+            cvc: '123', // Replace with actual CVC
+          },
+          billing_details: {
+            name: 'Murtaza Rizvi',
+          },
+          paymentMethodType: 'Card'
+        })
+        .then(function (result) {
+          console.log('result: ', result)
+        });
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onPressAddCard = () => {
+    navigation.navigate('AddcardScreen')
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
+        style={{ flex: 1 }}
         bounces={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}>
@@ -191,54 +231,53 @@ const GoogleMapsScreen = ({ navigation, route }) => {
             justifyContent: 'space-between',
             paddingHorizontal: 25,
           }}>
-          <Text
-            style={[styles.text, { fontWeight: 'bold', paddingVertical: 10 }]}>
-            Payment Method
-          </Text>
-          <View style={{ flexDirection: 'row', paddingTop: 10 }}>
-            <Radiobutton
-              onPress={() => setChecked(!checked)}
-              checked={checked}
-              setChecked={setChecked}
+
+          <View style={{ alignItems: 'center', justifyContent: 'space-around', flexDirection: 'row' }} >
+            {/* <CardField
+              postalCodeEnabled={false}
+              placeholder={{
+                number: '4242 4242 4242 4242',
+              }}
+              onCardChange={(cardDetails) => {
+                console.log('cardDetails', cardDetails);
+                setCardDetails(cardDetails)
+              }}
+              style={{ width: '100%', height: '20%', backgroundColor: 'pink', marginBottom: '10%' }}
+            /> */}
+            {/* <TouchableOpacity
+              onPress={() => createPaymentIntent()}
+              style={{
+                backgroundColor: 'pink',
+                width: '80%',
+                height: '20%',
+                borderRadius: 25,
+                alignItems: 'center',
+                justifyContent: 'center',
+                alignSelf: 'center'
+              }} >
+              <Text>Confirm</Text>
+            </TouchableOpacity> */}
+            <ButtonComponent
+              borderRadius={14}
+              buttonText="Add Card"
+              buttonzColor={Colors.tertiary}
+              textColor={Colors.secondary}
+              onPress={() => onPressAddCard()}
+              height={WIDTH <= 375 ? 55 : 55}
+              width={WIDTH <= 375 ? 125 : 175}
+              marginBottom={'10%'}
             />
-            <Text
-              style={[
-                styles.text,
-                { fontSize: 14, color: '#4A4A4A', paddingTop: 8 },
-              ]}>
-              Credit Card
-            </Text>
-          </View>
-          <View style={{ flexDirection: 'row', paddingTop: 10 }}>
-            <Radiobutton
-              onPress={() => setChecked(!checked)}
-              checked={checked}
-              setChecked={setChecked}
-            />
-            <Text
-              style={[
-                styles.text,
-                { fontSize: 14, color: '#4A4A4A', paddingTop: 8 },
-              ]}>
-              Debit Card
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            marginTop: 25,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: 10,
-          }}>
+          </View >
           <ButtonComponent
             borderRadius={14}
             buttonText="Continue"
             buttonColor={Colors.tertiary}
             textColor={Colors.secondary}
-            onPress={() => getOrderObject()}
+            onPress={() => onPressAddCard()}
             height={WIDTH <= 375 ? 55 : 55}
-            width={WIDTH <= 323 ? 260 : 300}
+            width={WIDTH <= 375 ? 125 : 175}
+            marginBottom={'20%'}
+            alignSelf={'center'}
           />
         </View>
       </ScrollView>

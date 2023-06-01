@@ -7,18 +7,28 @@ import {
   Modal,
   TouchableWithoutFeedback,
 } from 'react-native';
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Colors} from '../assets/constants/Colors';
-import {Fonts} from '../assets/constants/Fonts';
-import {Checkbox, FAB, TouchableRipple} from 'react-native-paper';
+import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from '../assets/constants/Colors';
+import { Fonts } from '../assets/constants/Fonts';
+import { Checkbox, FAB, TouchableRipple } from 'react-native-paper';
 import Assets from '../assets';
-import {WIDTH} from '../assets/constants/Dimensions';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { WIDTH } from '../assets/constants/Dimensions';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import ButtonComponent from '../components/Button';
 import Input from '../components/Input';
+import PaymentMethod from '../components/PaymentMethod'
+import { CardField, useStripe, } from '@stripe/stripe-react-native';
+import { getCards } from '../https';
+import { useEffect } from 'react';
 
-const AddcardScreen = ({navigation}) => {
+const AddcardScreen = ({ navigation }) => {
+
+  const [cardDetails, setCardDetails] = useState('')
+
+  const stripe = useStripe();
+
+
   const [checked, setChecked] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState({
@@ -30,14 +40,33 @@ const AddcardScreen = ({navigation}) => {
     confirmPassword: '',
   });
 
+  useEffect(() => {
+    getCardsFormServer()
+  })
+
+  const getCardsFormServer = () => {
+    const data = {};
+    const header = {};
+
+    getCards(data, header, (response) => {
+      console.log('response: ', response?.data);
+      if (response?.data?.status == 'success') {
+        // 
+      } else {
+        //
+      }
+    });
+  };
+
   return (
     <>
       <SafeAreaView style={styles.container}>
-        <ScrollView
+
+        {/* <ScrollView
           bounces={false}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{flexGrow: 1}}>
-          <View style={{flex: 1, height: 200}}>
+          contentContainerStyle={{ flexGrow: 1 }}>
+          <View style={{ flex: 1, height: 200 }}>
             <View
               style={{
                 paddingHorizontal: 15,
@@ -73,21 +102,21 @@ const AddcardScreen = ({navigation}) => {
                       WIDTH < 390 && WIDTH >= 375
                         ? 240
                         : WIDTH < 375
-                        ? 240
-                        : 240,
+                          ? 240
+                          : 240,
                     position: 'absolute',
                     top:
                       WIDTH < 390 && WIDTH >= 375
                         ? -24
                         : WIDTH < 375
-                        ? -24
-                        : -16,
+                          ? -24
+                          : -16,
                     left:
                       WIDTH < 390 && WIDTH >= 375
                         ? -170
                         : WIDTH < 375
-                        ? -365
-                        : -350,
+                          ? -365
+                          : -350,
                     // right:
                     //   WIDTH < 390 && WIDTH >= 375 ? -170 : WIDTH < 375 ? -320 : -390,
                     zIndex: 10,
@@ -118,16 +147,16 @@ const AddcardScreen = ({navigation}) => {
                       WIDTH < 390 && WIDTH >= 375
                         ? 195
                         : WIDTH < 375
-                        ? 240
-                        : 240,
+                          ? 240
+                          : 240,
                     position: 'absolute',
                     top: WIDTH < 390 && WIDTH >= 375 ? 5 : WIDTH < 375 ? 5 : 5,
                     left:
                       WIDTH < 390 && WIDTH >= 375
                         ? -170
                         : WIDTH < 375
-                        ? -365
-                        : -350,
+                          ? -365
+                          : -350,
                     // right:
                     //   WIDTH < 390 && WIDTH >= 375 ? -170 : WIDTH < 375 ? -320 : -390,
                     zIndex: 10,
@@ -243,10 +272,11 @@ const AddcardScreen = ({navigation}) => {
                     width={WIDTH <= 323 ? 260 : 255}
                   />
                 </View>
+                
               </Modal>
             </View>
           </View>
-        </ScrollView>
+        </ScrollView> */}
       </SafeAreaView>
     </>
   );
@@ -289,7 +319,7 @@ const HeaderComponent = ({
         <Text style={styles.headertex}>Cards</Text>
         <TouchableOpacity
           onPress={() => setModalVisible(!modalVisible)}
-          style={{flexDirection: 'row'}}>
+          style={{ flexDirection: 'row' }}>
           <Image source={require('../assets/images/card-add.png')} />
           <Text style={styles.addtext}>Add</Text>
         </TouchableOpacity>
@@ -315,7 +345,7 @@ const HeaderComponent = ({
                 alignSelf: 'center',
               }}
             />
-            <View
+            {/* <View
               style={{
                 marginTop: 15,
                 // backgroundColor: 'yellow',
@@ -383,7 +413,8 @@ const HeaderComponent = ({
                 textColor={Colors.tertiary}
                 backgroundColor={'#fff'}
               />
-            </View>
+            </View> */}
+
             <View
               style={{
                 paddingTop: 15,
