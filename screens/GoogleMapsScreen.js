@@ -14,6 +14,8 @@ import { CardField, useStripe } from '@stripe/stripe-react-native';
 import axios from 'axios';
 import { useEffect } from 'react';
 import PaymentMethod from '../components/PaymentMethod';
+import AlertMessage from "../components/AlertMessage";
+
 const GoogleMapsScreen = ({ navigation, route }) => {
 
   const stripe = useStripe();
@@ -73,38 +75,13 @@ const GoogleMapsScreen = ({ navigation, route }) => {
     }));
   };
 
-  const createPaymentIntent = async () => {
-    console.log('cardDetails: ', cardDetails)
-    cardDetailsToSend = {
-
-    }
-    // return
-    try {
-      await stripe
-        .createPaymentMethod({
-          type: 'card',
-          card: {
-            number: '5555555555554444', // Replace with actual card number
-            exp_month: '02',
-            exp_year: '40',
-            cvc: '123', // Replace with actual CVC
-          },
-          billing_details: {
-            name: 'Murtaza Rizvi',
-          },
-          paymentMethodType: 'Card'
-        })
-        .then(function (result) {
-          console.log('result: ', result)
-        });
-
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const onPressAddCard = () => {
     navigation.navigate('GetCardsScreen')
+  }
+
+  const onPressContinue = () => {
+    AlertMessage.showMessage('Working on it!')
   }
 
   return (
@@ -233,39 +210,17 @@ const GoogleMapsScreen = ({ navigation, route }) => {
           }}>
 
           <View style={{ alignItems: 'center', justifyContent: 'space-around', flexDirection: 'row' }} >
-            {/* <CardField
-              postalCodeEnabled={false}
-              placeholder={{
-                number: '4242 4242 4242 4242',
-              }}
-              onCardChange={(cardDetails) => {
-                console.log('cardDetails', cardDetails);
-                setCardDetails(cardDetails)
-              }}
-              style={{ width: '100%', height: '20%', backgroundColor: 'pink', marginBottom: '10%' }}
-            /> */}
-            {/* <TouchableOpacity
-              onPress={() => createPaymentIntent()}
-              style={{
-                backgroundColor: 'pink',
-                width: '80%',
-                height: '20%',
-                borderRadius: 25,
-                alignItems: 'center',
-                justifyContent: 'center',
-                alignSelf: 'center'
-              }} >
-              <Text>Confirm</Text>
-            </TouchableOpacity> */}
+
             <ButtonComponent
               borderRadius={14}
               buttonText="Add Card"
-              buttonzColor={Colors.tertiary}
+              buttonColor={Colors.tertiary}
               textColor={Colors.secondary}
               onPress={() => onPressAddCard()}
               height={WIDTH <= 375 ? 55 : 55}
               width={WIDTH <= 375 ? 125 : 175}
               marginBottom={'10%'}
+              alignSelf={'center'}
             />
           </View >
           <ButtonComponent
@@ -273,7 +228,7 @@ const GoogleMapsScreen = ({ navigation, route }) => {
             buttonText="Continue"
             buttonColor={Colors.tertiary}
             textColor={Colors.secondary}
-            onPress={() => onPressAddCard()}
+            onPress={() => onPressContinue()}
             height={WIDTH <= 375 ? 55 : 55}
             width={WIDTH <= 375 ? 125 : 175}
             marginBottom={'20%'}

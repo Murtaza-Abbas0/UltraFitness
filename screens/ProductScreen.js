@@ -19,6 +19,7 @@ import Mymodal from '../components/Popup';
 import { CartICon, Trashicon } from '../assets/svgs/HomeSvgs';
 import ButtonComponent from '../components/Button';
 import { color } from 'react-native-reanimated';
+import AlertMessage from '../components/AlertMessage';
 
 const urlForImages = `https://hr-management-development.s3.eu-west-2.amazonaws.com/`
 
@@ -59,10 +60,11 @@ const ProductScreen = ({ navigation, route, index }) => {
 
   const onPressBuyNow = () => {
     console.log('tempArr in buy now func: ', tempArr)
-    if (tempArr?.price != 0) {
+    // return
+    if (count != 0) {
       navigation.navigate("GoogleMapsScreen", { orderData: tempArr })
     } else {
-      console.log('Price is 0')
+      AlertMessage.showMessage("Quantity can't be 0")
     }
   }
 
