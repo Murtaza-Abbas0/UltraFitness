@@ -8,6 +8,7 @@ import { Colors } from '../assets/constants/Colors';
 import { WIDTH } from '../assets/constants/Dimensions';
 import { Fonts } from '../assets/constants/Fonts';
 import { attachCard } from "../https";
+import AlertMessage from "../components/AlertMessage";
 
 const HeaderComponent = ({ navigation, hedtext }) => {
     return (
@@ -41,14 +42,26 @@ const AddCardsScreen = () => {
 
     const stripe = useStripe();
 
-    const attachCardToServer = async() => {
+    const onPressConfirm = () => {
+        AlertMessage.showMessage("Card Attached Successfully")
+        setTimeout(() => {
+            navigation.goBack()
+        }, 2000)
+    }
 
-       await createPaymentIntent()
+    const attachCardToServer = async () => {
+
+        await createPaymentIntent()
 
         const data = { "pmId": pmId }
 
         attachCard(data, {}, (response) => {
-            console.log('response: ', response?.data)
+            console.log('response: ', response?.data?.status)
+            if (response?.data?.status == "success") {
+                onPressConfirm()
+            } else {
+                AlertMessage.showMessage("Something Went Wrong!")
+            }
         })
     }
 
@@ -73,7 +86,7 @@ const AddCardsScreen = () => {
                 .then(function (result) {
                     console.log('result: ', result)
                     pmId = result?.paymentMethod?.id
-                    
+
                 });
 
         } catch (error) {

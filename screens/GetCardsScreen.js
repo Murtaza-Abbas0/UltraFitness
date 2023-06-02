@@ -22,6 +22,7 @@ import { CardField, useStripe, } from '@stripe/stripe-react-native';
 import { getCards } from '../https';
 import { useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import AlertMessage from '../components/AlertMessage';
 
 const GetCardsScreen = ({ navigation }) => {
 
@@ -62,11 +63,11 @@ const GetCardsScreen = ({ navigation }) => {
     // const header = {};
 
     getCards(data, (response) => {
-      console.log('response: ', response?.data?.data[0]);
-      if (response?.data?.status == 'success') {
-        // 
-      } else {
-        //
+      console.log('response: ', response?.data?.data);
+      if (response?.data?.status == 'success' && response?.data?.data !== []) {
+        AlertMessage.showMessage('Card List Fetched Successfully')
+      } else if (response?.data?.status == 'success' && response?.data?.data == []) {
+        AlertMessage.showMessage('No Cards Found')
       }
     });
   };
