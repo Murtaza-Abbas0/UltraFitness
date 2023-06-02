@@ -17,13 +17,14 @@ import MyOrders from '../screens/MyOrder';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 import OrderTracker from '../screens/TrackOrder';
 import SportsScreen from '../screens/sportsScreen';
-import AddcardScreen from '../screens/AddcardScreen';
+import GetCardsScreen from '../screens/GetCardsScreen';
 import ExcersizeDetail from '../screens/excersizeDetail';
 import VideoScreen from '../screens/VideoScreen';
 import AssismentScreen from '../screens/AssismentScreen';
 import Account from '../screens/Account';
 import TermsConditionScreen from '../screens/TermsConditionScreen';
 import Notification from '../screens/notification';
+import AddCardsScreen from '../screens/AddCardsScreen';
 import instance from "../https/config";
 
 const StackNavigator = () => {
@@ -67,6 +68,7 @@ const StackNavigator = () => {
       <Stack.Screen name="GoogleMapsScreen" component={GoogleMapsScreen} />
       <Stack.Screen name="CheckoutCart" component={CheckoutCart} />
       <Stack.Screen name="CheckoutOrder" component={CheckoutOrder} />
+      <Stack.Screen name="AddCardsScreen" component={AddCardsScreen} />
 
       <Stack.Screen
         name="ProductDetailScreen"
@@ -74,7 +76,7 @@ const StackNavigator = () => {
       />
       <Stack.Screen name="OrderTracker" component={OrderTracker} />
       <Stack.Screen name="SportsScreen" component={SportsScreen} />
-      <Stack.Screen name="AddcardScreen" component={AddcardScreen} />
+      <Stack.Screen name="GetCardsScreen" component={GetCardsScreen} />
       <Stack.Screen name="ExcersizeDetail" component={ExcersizeDetail} />
       <Stack.Screen name="VideoScreen" component={VideoScreen} />
       <Stack.Screen name="AssismentScreen" component={AssismentScreen} />

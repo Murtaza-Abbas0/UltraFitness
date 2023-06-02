@@ -104,7 +104,7 @@ const GoogleMapsScreen = ({ navigation, route }) => {
   };
 
   const onPressAddCard = () => {
-    navigation.navigate('AddcardScreen')
+    navigation.navigate('GetCardsScreen')
   }
 
   return (

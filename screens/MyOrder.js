@@ -14,7 +14,7 @@ import { useFocusEffect } from '@react-navigation/native';
 const MyOrders = ({navigation, route}) => {
 
   useFocusEffect(
-    React.useCallback(() => {
+    React.useCallback(async() => {
       const fetchData = async () => {
         await getOrdersFromServer();
       };

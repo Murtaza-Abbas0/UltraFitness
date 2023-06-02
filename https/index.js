@@ -30,6 +30,8 @@ export const CreateAccount = (data={}, header={}, cb) => httpPostRequest(url.sig
 
 export const Logout = (data={}, header={}, cb) => httpPostRequest(url.logout, data, header, cb)
 
+export const attachCard = (data={}, header={}, cb) => httpPostRequest(url.attachCard, data, header, cb)
+
 export const getMyOrders = (data = {}, header = {}, cb) => {
     const url = `/users/my-orders`;
   
