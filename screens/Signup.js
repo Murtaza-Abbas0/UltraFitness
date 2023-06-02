@@ -14,17 +14,18 @@ import { ValidateEmail, settingUpAuth, } from '../helper';
 import { CreateAccount } from '../https';
 import { signup } from '../redux/actions';
 import { useDispatch } from 'react-redux'
+import AlertMessage from '../components/AlertMessage';
 
 const dispatch = useDispatch()
 const Signup = ({ navigation }) => {
   const [data, setData] = useState({
-    fullName: 'dawood user',
-    contactNo: '+92357456454',
-    gender: 'male',
-    "age": 52,
-    email: 'dawooduser019510@mailinator.com',
-    password: 'dawooduser123456',
-    passwordConfirm: 'dawooduser123456',
+    fullName: '',
+    contactNo: '',
+    gender: '',
+    email: '',
+    password: '',
+    passwordConfirm: '',
+    age: ''
   });
   const [agree, setAgree] = useState(true);
   const handlerSignup = () => {
@@ -43,22 +44,14 @@ const Signup = ({ navigation }) => {
         return;
       }
       CreateAccount(data, { }, (response) => {
-        console.log('test3')
-        debugger
+        AlertMessage.showMessage("Account Created Successfully")
         const data = settingUpAuth(response)
-        debugger
-        // const {id, age, email, gender, contactNo, fullName, } = response.data.data.user;
-        // data = {
-        //   auth: true,
-        //   token: response.data.token,
-        //   id, age, email, gender, contactNo, fullName
-        // }
         dispatch({ type: signup, data })
-        debugger
         navigation.goBack()
       })
     }
   }
+  const onChange = (text, key) => setData({...data, [key]: text})
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView
@@ -84,12 +77,14 @@ const Signup = ({ navigation }) => {
           formKey="fullName"
           textColor={Colors.primary}
           backgroundColor={'#FFFFFF'}
+          onChangeHandler={onChange}
         />
         <View style={{ marginVertical: 10 }} />
         <Input
           placeholder="Contact No"
           text={data.contactNo}
           setText={setData}
+          onChangeHandler={onChange}
           keyboardType={'phone-pad'}
           formKey="contactNo"
           textColor={Colors.primary}
@@ -114,6 +109,7 @@ const Signup = ({ navigation }) => {
               gender={true}
               text={data.gender}
               setText={setData}
+              onChangeHandler={onChange}
               formKey="gender"
               textColor={Colors.primary}
               backgroundColor={'#FFFFFF'}
@@ -124,6 +120,7 @@ const Signup = ({ navigation }) => {
           placeholder="Age"
           text={data.age}
           setText={setData}
+          onChangeHandler={onChange}
           keyboardType={'phone-pad'}
           formKey="age"
           textColor={Colors.primary}
@@ -134,6 +131,7 @@ const Signup = ({ navigation }) => {
         <Input
           placeholder="Email Address"
           text={data.email}
+          onChangeHandler={onChange}
           setText={setData}
           formKey="email"
           textColor={Colors.primary}
@@ -143,6 +141,7 @@ const Signup = ({ navigation }) => {
         <Input
           placeholder="Password"
           text={data.password}
+          onChangeHandler={onChange}
           setText={setData}
           formKey="password"
           textColor={Colors.primary}
@@ -153,6 +152,7 @@ const Signup = ({ navigation }) => {
           placeholder="Confirm Password"
           text={data.passwordConfirm}
           setText={setData}
+          onChangeHandler={onChange}
           formKey="passwordConfirm"
           textColor={Colors.primary}
           backgroundColor={'#FFFFFF'}

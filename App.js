@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react'
 import FlashMessage from "react-native-flash-message";
 import { StripeProvider } from '@stripe/stripe-react-native';
+import SpinnerLoader from './components/spinnerLoader';
 
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
               <GestureHandlerRootView style={{ flex: 1 }}>
                 <RootStack />
                 <FlashMessage ref={myLocalFlashMessage} />
+                <SpinnerLoader />
               </GestureHandlerRootView>
             </PaperProvider>
           </SafeAreaProvider>

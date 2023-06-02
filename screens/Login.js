@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import ButtonComponent from '../components/Button';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LoginAuth } from '../https';
-import { ValidateEmail, settingUpAuth } from '../helper';
+import { ValidateEmail, hardNavigation, settingUpAuth } from '../helper';
 import { signin } from '../redux/actions';
 import { useDispatch } from 'react-redux'
 import AlertMessage from '../components/AlertMessage'
@@ -19,31 +19,25 @@ import AlertMessage from '../components/AlertMessage'
 const dispatch = useDispatch()
 const Login = ({ navigation }) => {
   const [data, setData] = useState({
-    email: 'dawooduser019510@mailinator.com',
-    password: 'dawooduser123456',
+    email: '',
+    password: '',
   });
   const [rememberMe, setRememberMe] = useState(false);
   const handlerSignin = () => {
-    // console.log('Test')
     if (data['email'] !== "" && data['password'] !== "") {
       if (ValidateEmail(data.email)) {
         console.log('Please enter valid email')
         return;
       }
       LoginAuth(data, {}, (response) => {
-        // debugger
-        // console.log(response)
         const data = settingUpAuth(response)
-        console.log('data: ', data)
-        // debugger
         dispatch({ type: signin , data })
-        console.log('Test!')
         AlertMessage.showMessage('Login Successfuly')
-        navigation.navigate('Drawer')
-
+        hardNavigation(navigation, 'Drawer')
       })
     }
   }
+  const onChange = (text, key) => setData({...data, [key]: text})
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView
@@ -99,6 +93,7 @@ const Login = ({ navigation }) => {
             placeholder="email"
             text={data.email}
             setText={setData}
+            onChangeHandler={onChange}
             formKey="email"
             textColor={Colors.primary}
             backgroundColor={'#FFFFFF'}
@@ -108,6 +103,7 @@ const Login = ({ navigation }) => {
             placeholder="Password"
             text={data.password}
             setText={setData}
+            onChangeHandler={onChange}
             formKey="password"
             textColor={Colors.primary}
             backgroundColor={'#FFFFFF'}

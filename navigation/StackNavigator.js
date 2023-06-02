@@ -32,15 +32,13 @@ const StackNavigator = () => {
   const user = useSelector(state => state.User);
 
   console.log(`Bearer ${user?.token}`)
+  console.log(`auth ${user?.auth}`)
 
-  const [initialRouteName, setInitialRouteName] = useState("Splash");
   useEffect(() => {
     if (auth) {
-      setInitialRouteName("Drawer")
       instance.defaults.headers.common['Authorization'] = `Bearer ${user?.token}`;
       return;
     }
-    setInitialRouteName("Login")
   },[auth])
   return (
     <Stack.Navigator
@@ -50,7 +48,7 @@ const StackNavigator = () => {
         animationTypeForReplace: 'push',
         animation: 'slide_from_right',
       }}
-      initialRouteName={initialRouteName}>
+      initialRouteName={auth && "Drawer"}>
       <Stack.Screen name="Onboarding" component={Onboarding} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />

@@ -19,6 +19,7 @@ import Mymodal from '../components/Popup';
 import { CartICon, Trashicon } from '../assets/svgs/HomeSvgs';
 import ButtonComponent from '../components/Button';
 import { color } from 'react-native-reanimated';
+import CartClass from '../components/helperRN';
 
 const urlForImages = `https://hr-management-development.s3.eu-west-2.amazonaws.com/`
 
@@ -27,15 +28,13 @@ const ProductScreen = ({ navigation, route, index }) => {
 
   console.log('data: ', data)
 
-  let tempArr = []
+  // let tempArr = []
 
   useEffect(() => {
     setProductData(data)
-    getProductArray()
-    console.log('tempArr in useEffect: ', tempArr)
-  }, [tempArr])
+  }, [])
 
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
   const [productData, setProductData] = useState(data);
 
   const increment = () => {
@@ -46,31 +45,21 @@ const ProductScreen = ({ navigation, route, index }) => {
       setCount(count - 1);
   };
 
-  const getProductArray = () => {
-    tempArr.push(
-      {
-        "productId": productData?._id,
-        "quantity": count,
-        "price": count * productData?.price
-      },
-    )
-  }
+  // const getProductArray = () => {
+  //   tempArr.push(
+  //     {
+  //       "productId": productData?._id,
+  //       "quantity": count,
+  //       "price": count * productData?.price
+  //     },
+  //   )
+  // }
 
 
   const onPressBuyNow = () => {
-    console.log('tempArr in buy now func: ', tempArr)
-    if (tempArr?.price != 0) {
-      navigation.navigate("GoogleMapsScreen", { orderData: tempArr })
-    } else {
-      console.log('Price is 0')
-    }
+    CartClass.buyNow(count, productData._id, productData.price)
+    navigation.navigate("GoogleMapsScreen", { orderData: tempArr })
   }
-
-  // const data1 = [
-  //   {imageitem: ProductImaig1},
-  //   {imageitem: ProductImaig1},
-  //   {imageitem: ProductImaig1},
-  // ];
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <>
@@ -322,7 +311,8 @@ const ProductScreen = ({ navigation, route, index }) => {
         button1={'Close'}
         button2=" Cart "
         cartbtn={() => {
-          navigation.navigate('CartScreen');
+          CartClass.addToCart(count, productData._id, productData.price)
+          setModalVisible(false)
         }}
       />
     </>
