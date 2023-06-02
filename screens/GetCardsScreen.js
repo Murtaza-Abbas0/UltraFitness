@@ -7,7 +7,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../assets/constants/Colors';
 import { Fonts } from '../assets/constants/Fonts';
@@ -21,13 +21,14 @@ import PaymentMethod from '../components/PaymentMethod'
 import { CardField, useStripe, } from '@stripe/stripe-react-native';
 import { getCards } from '../https';
 import { useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import AlertMessage from '../components/AlertMessage';
 
-const AddcardScreen = ({ navigation }) => {
+const GetCardsScreen = ({ navigation }) => {
 
   const [cardDetails, setCardDetails] = useState('')
 
   const stripe = useStripe();
-
 
   const [checked, setChecked] = useState();
   const [modalVisible, setModalVisible] = useState(false);
@@ -40,20 +41,33 @@ const AddcardScreen = ({ navigation }) => {
     confirmPassword: '',
   });
 
-  useEffect(() => {
-    getCardsFormServer()
-  })
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+        getCardsFormServer();
+      };
+
+      fetchData();
+
+      return () => {
+        // Cleanup function if needed
+      };
+    }, [])
+  );
 
   const getCardsFormServer = () => {
-    const data = {};
-    const header = {};
 
-    getCards(data, header, (response) => {
-      console.log('response: ', response?.data);
-      if (response?.data?.status == 'success') {
-        // 
-      } else {
-        //
+    console.log('test')
+
+    const data = {};
+    // const header = {};
+
+    getCards(data, (response) => {
+      console.log('response: ', response?.data?.data);
+      if (response?.data?.status == 'success' && response?.data?.data !== []) {
+        AlertMessage.showMessage('Card List Fetched Successfully')
+      } else if (response?.data?.status == 'success' && response?.data?.data == []) {
+        AlertMessage.showMessage('No Cards Found')
       }
     });
   };
@@ -62,7 +76,7 @@ const AddcardScreen = ({ navigation }) => {
     <>
       <SafeAreaView style={styles.container}>
 
-        {/* <ScrollView
+        <ScrollView
           bounces={false}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1 }}>
@@ -272,11 +286,11 @@ const AddcardScreen = ({ navigation }) => {
                     width={WIDTH <= 323 ? 260 : 255}
                   />
                 </View>
-                
+
               </Modal>
             </View>
           </View>
-        </ScrollView> */}
+        </ScrollView>
       </SafeAreaView>
     </>
   );
@@ -318,7 +332,7 @@ const HeaderComponent = ({
 
         <Text style={styles.headertex}>Cards</Text>
         <TouchableOpacity
-          onPress={() => setModalVisible(!modalVisible)}
+          onPress={() => navigation.navigate("AddCardsScreen")}
           style={{ flexDirection: 'row' }}>
           <Image source={require('../assets/images/card-add.png')} />
           <Text style={styles.addtext}>Add</Text>
@@ -547,4 +561,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddcardScreen;
+export default GetCardsScreen;

@@ -140,7 +140,7 @@ const CheckoutCart = ({navigation}) => {
               </Text>
             </View>
             <TouchableOpacity
-              onPress={() => navigation.navigate('AddcardScreen')}
+              onPress={() => navigation.navigate('GetCardsScreen')}
               style={{}}>
               <Text
                 numberOfLines={2}

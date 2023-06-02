@@ -20,6 +20,7 @@ import { CartICon, Trashicon } from '../assets/svgs/HomeSvgs';
 import ButtonComponent from '../components/Button';
 import { color } from 'react-native-reanimated';
 import CartClass from '../components/helperRN';
+import AlertMessage from '../components/AlertMessage';
 
 const urlForImages = `https://hr-management-development.s3.eu-west-2.amazonaws.com/`
 

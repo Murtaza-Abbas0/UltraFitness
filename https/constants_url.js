@@ -3,5 +3,6 @@ export const url = {
     signup: '/users/signup',
     logout: '/users/logout',
     getMyOrders: '/users/my-orders',
-    getAllProducts: '/products'
+    getAllProducts: '/products',
+    attachCard: 'users/attach-payment-method',
 }

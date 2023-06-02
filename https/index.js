@@ -16,6 +16,7 @@ const httpGetRequest = async (url, header, cb) => {
     try {
       const response = await instance.get(url, header);
       cb(response);
+      // console.log(response?.data)
     } catch (error) {
       console.log(error);
       console.log(error?.message || 'Something went wrong');
@@ -29,18 +30,20 @@ export const CreateAccount = (data={}, header={}, cb) => httpPostRequest(url.sig
 
 export const Logout = (data={}, header={}, cb) => httpPostRequest(url.logout, data, header, cb)
 
+export const attachCard = (data={}, header={}, cb) => httpPostRequest(url.attachCard, data, header, cb)
+
 export const getMyOrders = (data = {}, header = {}, cb) => {
     const url = `/users/my-orders`;
   
     httpGetRequest(url, header, cb);
   };
 
-export const getCards = (data = {}, header = {}, cb) => {
+export const getCards = (data = {} ,header = {}, cb) => {
     const url = `users/payment-method-list`;
   
-    httpGetRequest(url, header, cb);
+    httpGetRequest(url, data,header, cb);
   };
-
+  
 export const getAllProducts = (data = {}, header = {}, cb) => {
     const url = `/products`;
   

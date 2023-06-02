@@ -19,7 +19,7 @@ import ButtonComponent from '../components/Button';
 import { WIDTH } from '../assets/constants/Dimensions';
 import MyOrders from '../screens/MyOrder';
 import CartScreen from '../screens/CartScreen';
-import AddcardScreen from '../screens/AddcardScreen';
+import GetCardsScreen from '../screens/GetCardsScreen';
 import Settings from '../screens/settings';
 import { Logout } from '../https';
 import { useSelector } from 'react-redux';
@@ -43,7 +43,7 @@ const DrawerNavigator = () => {
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="My Orders" component={MyOrders} />
       <Drawer.Screen name="Cart" component={CartScreen} />
-      <Drawer.Screen name="Payment Settings" component={AddcardScreen} />
+      <Drawer.Screen name="GetCardsScreen" component={GetCardsScreen} />
       <Drawer.Screen name="Settings" component={Settings} />
       {/* <Drawer.Screen name="InstructorDetails" component={InstructorDetails} /> */}
     </Drawer.Navigator>
