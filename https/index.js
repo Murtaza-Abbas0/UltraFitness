@@ -16,6 +16,7 @@ const httpGetRequest = async (url, header, cb) => {
     try {
       const response = await instance.get(url, header);
       cb(response);
+      // console.log(response?.data)
     } catch (error) {
       console.log(error);
       console.log(error?.message || 'Something went wrong');
@@ -35,12 +36,12 @@ export const getMyOrders = (data = {}, header = {}, cb) => {
     httpGetRequest(url, header, cb);
   };
 
-export const getCards = (data = {}, header = {}, cb) => {
+export const getCards = (data = {} ,header = {}, cb) => {
     const url = `users/payment-method-list`;
   
-    httpGetRequest(url, header, cb);
+    httpGetRequest(url, data,header, cb);
   };
-
+  
 export const getAllProducts = (data = {}, header = {}, cb) => {
     const url = `/products`;
   

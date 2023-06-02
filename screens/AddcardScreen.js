@@ -46,11 +46,11 @@ const AddcardScreen = ({ navigation }) => {
 
   const getCardsFormServer = () => {
     const data = {};
-    const header = {};
-
-    getCards(data, header, (response) => {
+    // const header = {};
+  
+    getCards(data, (response) => {
       console.log('response: ', response?.data);
-      if (response?.data?.status == 'success') {
+      if(response?.data?.status == 'success'){
         // 
       } else {
         //

@@ -19,8 +19,8 @@ import AlertMessage from '../components/AlertMessage'
 const dispatch = useDispatch()
 const Login = ({ navigation }) => {
   const [data, setData] = useState({
-    email: 'dawooduser019510@mailinator.com',
-    password: 'dawooduser123456',
+    email: 'MurtazaRizviUser@mailinator.com',
+    password: '123456789',
   });
   const [rememberMe, setRememberMe] = useState(false);
   const handlerSignin = () => {

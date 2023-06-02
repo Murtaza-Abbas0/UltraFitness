@@ -18,13 +18,13 @@ import { useDispatch } from 'react-redux'
 const dispatch = useDispatch()
 const Signup = ({ navigation }) => {
   const [data, setData] = useState({
-    fullName: 'dawood user',
+    fullName: 'Murtaza Rizvi',
     contactNo: '+92357456454',
     gender: 'male',
-    "age": 52,
-    email: 'dawooduser019510@mailinator.com',
-    password: 'dawooduser123456',
-    passwordConfirm: 'dawooduser123456',
+    age: '21',
+    email: 'MurtazaRizviUser@mailinator.com',
+    password: '123456789',
+    passwordConfirm: '123456789',
   });
   const [agree, setAgree] = useState(true);
   const handlerSignup = () => {
