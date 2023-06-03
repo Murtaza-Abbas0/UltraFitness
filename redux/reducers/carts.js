@@ -3,7 +3,7 @@ import { addItem, buyNow, setTotalPrice } from "../actions"
 const initialState = {
     cart: [], //price, quantity, productId
     instantPurchase: {},
-    totalPrice: '',
+    totalPrice: 0,
     address: '',
     zipCode: '',
     city: '',

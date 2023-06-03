@@ -19,12 +19,15 @@ import Mymodal from '../components/Popup';
 import { CartICon, Trashicon } from '../assets/svgs/HomeSvgs';
 import ButtonComponent from '../components/Button';
 import { color } from 'react-native-reanimated';
-import CartClass from '../components/helperRN';
 import AlertMessage from '../components/AlertMessage';
-
-const urlForImages = `https://hr-management-development.s3.eu-west-2.amazonaws.com/`
+import { addToCart, urlForImages } from '../helper';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { addItem, buyNow, setTotalPrice } from '../redux/actions';
 
 const ProductScreen = ({ navigation, route, index }) => {
+  const dispatch = useDispatch()
+  const cart = useSelector(x => x.Cart.cart)
   const { data } = route.params;
 
   console.log('data: ', data)
@@ -33,10 +36,16 @@ const ProductScreen = ({ navigation, route, index }) => {
 
   useEffect(() => {
     setProductData(data)
+    let index = cart.findIndex(x => x.productId === data._id)
+    if (index !== -1) {
+      const counter = cart[index].quantity
+      setCount(counter)
+    }
   }, [])
 
   const [count, setCount] = useState(1);
   const [productData, setProductData] = useState(data);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const increment = () => {
     setCount(count + 1);
@@ -46,22 +55,19 @@ const ProductScreen = ({ navigation, route, index }) => {
       setCount(count - 1);
   };
 
-  // const getProductArray = () => {
-  //   tempArr.push(
-  //     {
-  //       "productId": productData?._id,
-  //       "quantity": count,
-  //       "price": count * productData?.price
-  //     },
-  //   )
-  // }
-
-
   const onPressBuyNow = () => {
-    CartClass.buyNow(count, productData._id, productData.price)
-    navigation.navigate("GoogleMapsScreen", { orderData: tempArr })
+    const obj = {
+      price: productData.price, quantity: count,
+      productId: productData._id, name: productData.name, image: productData.images[0], description: productData.description
+    }
+    dispatch({ type: buyNow, data: { ...obj } })
+    dispatch({ type: setTotalPrice, data: productData.price })
+    // navigation.navigate("GoogleMapsScreen")
   }
-  const [modalVisible, setModalVisible] = useState(false);
+
+  const updateCart = arr => {
+    dispatch({ type: addItem, data: [...arr] })
+  }
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -137,7 +143,7 @@ const ProductScreen = ({ navigation, route, index }) => {
                 style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View>
                   <Text style={[styles.CenterText, { color: '#00B4D8' }]}>
-                   {data?.name}
+                    {data?.name}
                   </Text>
                 </View>
                 <View style={{}}>
@@ -312,12 +318,13 @@ const ProductScreen = ({ navigation, route, index }) => {
         button1={'Close'}
         button2=" Cart "
         cartbtn={() => {
-          CartClass.addToCart(count, productData._id, productData.price)
+          addToCart(cart, count, productData._id, productData.price, productData.name, productData.images[0], productData.description, updateCart)
           setModalVisible(false)
         }}
       />
     </>
   );
+
 };
 
 const HeaderComponent = ({ navigation }) => {

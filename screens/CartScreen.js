@@ -12,8 +12,17 @@ import Assets from '../assets';
 import {Checkbox} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {TouchableOpacity} from 'react-native';
+import CartClass from '../components/helperRN'
+import { useDispatch, useSelector } from 'react-redux';
+import { addItem, buyNow, setTotalPrice } from '../redux/actions';
+import { urlForImages } from '../helper';
 
 const CartScreen = ({navigation}) => {
+  const dispatch = useDispatch()
+  const cart = useSelector(x => x.Cart.cart)
+  const instantPurchase = useSelector(x => x.Cart.instantPurchase)
+  
+  
   const [check, setChecked] = useState(false);
   const [items, setItems] = useState([
     {
@@ -31,21 +40,22 @@ const CartScreen = ({navigation}) => {
       checked: true,
     },
   ]);
-  const increment = id => {
-    setItems(prevItems =>
-      prevItems.map(item =>
-        item.id === id ? {...item, count: item.count + 1} : item,
-      ),
-    );
-  };
-
-  const decrement = id => {
-    setItems(prevItems =>
-      prevItems.map(item =>
-        item.id === id ? {...item, count: item.count - 1} : item,
-      ),
-    );
-  };
+  const cartQty = (mode, index, count) => {
+    let qty = count;
+    let arr = [...cart]
+    if (mode === "increment") {
+      qty++;
+    } else if (mode === "decrement") {
+      qty--
+    }
+    if (qty === 0) {
+      arr.splice(index, 1);
+    } else  {
+      arr[index].quantity = qty
+      arr[index].price = qty * arr[index].price
+    }
+    dispatch({ type: addItem, data: [...arr] })
+  }
   const toggleChecked = id => {
     setItems(prevItems =>
       prevItems.map(item =>
@@ -53,9 +63,27 @@ const CartScreen = ({navigation}) => {
       ),
     );
   };
-  const removeItem = id => {
-    setItems(prevItems => prevItems.filter(item => item.id !== id));
+  const removeItemCart = id => {
+    let _cart = [...cart]
+    _cart = _cart.filter(x => x.productId !== id)
+    dispatch({ type: addItem, data: [..._cart] })
   };
+  const buyNowQty = (mode) => {
+    let quantity = instantPurchase['quantity'];
+    if (mode === "increment") {
+      quantity++;
+    } else {
+      quantity--;
+    }
+    if (quantity === 0) {
+      dispatch({ type: buyNow, data: {} })
+      dispatch({ type: setTotalPrice, data: 0 })
+    } else {
+      const price = instantPurchase['price'] * quantity;
+      dispatch({ type: buyNow, data: { ...instantPurchase, price, quantity } })
+      dispatch({ type: setTotalPrice, data: price })
+    }
+  }
   const [count, setCount] = useState(2);
   return (
     <SafeAreaView style={styles.container}>
@@ -72,33 +100,57 @@ const CartScreen = ({navigation}) => {
           />
         </View>
         <View style={{marginTop: 25, paddingHorizontal: 5}}>
-          {items.map(item => (
-            <>
+          {Object.keys(instantPurchase).length !== 0 ? 
+          <View
+                style={{
+                  paddingHorizontal: 5,
+                  flexDirection: 'row',
+                }}>
+                {/* <View style={{justifyContent: 'center'}}>
+                  <Checkbox
+                    value={item.checked}
+                    onValueChange={() => toggleChecked(item.id)}
+                  />
+                </View> */}
+                <CartItems
+                  key={instantPurchase.productId}
+                  card1
+                  status={true}
+                  checkpress={true}
+                  itemimage={`${urlForImages}${instantPurchase.images}`}
+                  itemdescription={instantPurchase.description}
+                  count={instantPurchase.count}
+                  increment={() => buyNowQty("increment")}
+                  decrement={() => buyNowQty("decrement")}
+                />
+              </View>
+            : cart.length > 0 ? cart.map((item, index) => (
+              <View key={index}>
               <View
                 style={{
                   paddingHorizontal: 5,
                   flexDirection: 'row',
                 }}>
-                <View style={{justifyContent: 'center'}}>
+                {/* <View style={{justifyContent: 'center'}}>
                   <Checkbox
                     value={item.checked}
                     onValueChange={() => toggleChecked(item.id)}
                   />
-                </View>
+                </View> */}
                 <CartItems
-                  key={item.id}
+                  key={index}
                   card1
-                  status={check}
-                  checkpress={item.checkpress}
-                  itemimage={item.image}
+                  status={true}
+                  checkpress={true}
+                  itemimage={`${urlForImages}${item.images}`}
                   itemdescription={item.description}
-                  count={item.count}
-                  increment={() => increment(item.id)}
-                  decrement={() => decrement(item.id)}
+                  count={item.quantity}
+                  increment={() => cartQty("increment", index, item.quantity)}
+                  decrement={() => cartQty("decrement", index, item.quantity)}
                 />
               </View>
               <TouchableOpacity
-                onPress={() => removeItem(item.id)}
+                onPress={() => removeItemCart(item.productId)}
                 style={{
                   width: 26,
                   height: 26,
@@ -111,8 +163,9 @@ const CartScreen = ({navigation}) => {
                 }}>
                 <Icon name="close" color={'#fff'} size={20} />
               </TouchableOpacity>
-            </>
-          ))}
+            </View>
+            )) : null
+            }
         </View>
 
         <View style={{marginTop: 25}}>

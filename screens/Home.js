@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Colors} from '../assets/constants/Colors';
 import Header from '../components/Header';
@@ -21,7 +21,6 @@ import ProductCardSm from '../components/ProductCardSm';
 import ProductCardmd from '../components/ProductCardmd';
 import ProductCardlg from '../components/ProductCardlg';
 import ButtonComponent from '../components/Button';
-
 const Home = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
