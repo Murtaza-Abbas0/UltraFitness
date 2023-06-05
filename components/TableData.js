@@ -2,8 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Colors } from '../assets/constants/Colors';
 import { Fonts } from '../assets/constants/Fonts';
+import { useSelector } from 'react-redux';
 
 const Table = () => {
+  const cart = useSelector(x => x.Cart.cart)
+  const instantPurchase = useSelector(x => x.Cart.instantPurchase)
   return (
     <View style={styles.table}>
       <View style={styles.row}>
@@ -17,7 +20,17 @@ const Table = () => {
           Price
         </Text>
       </View>
-      <View style={styles.row}>
+      {Object.keys(instantPurchase).length !== 0 ? <View style={styles.row}>
+        <Text style={[styles.cell]}>{instantPurchase.name}</Text>
+        <Text style={[styles.cell, { textAlign: 'center' }]}>{instantPurchase.quantity}</Text>
+        <Text style={[styles.cell, { textAlign: 'right' }]}>{`$${instantPurchase.price}`}</Text>
+      </View>
+       : cart.map((item, index) => <View key={index} style={styles.row}>
+       <Text style={[styles.cell]}>{`${item.name} #${++index}`}</Text>
+       <Text style={[styles.cell, { textAlign: 'center' }]}>{item.quantity}</Text>
+       <Text style={[styles.cell, { textAlign: 'right' }]}>{`$${item.price}`}</Text>
+     </View>) }
+      {/* <View style={styles.row}>
         <Text style={[styles.cell]}>Product #1</Text>
         <Text style={[styles.cell, { textAlign: 'center' }]}>02</Text>
         <Text style={[styles.cell, { textAlign: 'right' }]}>$100</Text>
@@ -31,7 +44,7 @@ const Table = () => {
         <Text style={[styles.cell]}>Delivery Charges</Text>
         <Text style={[styles.cell]}></Text>
         <Text style={[styles.cell, { textAlign: 'right' }]}>15.00</Text>
-      </View>
+      </View> */}
     </View>
   );
 };

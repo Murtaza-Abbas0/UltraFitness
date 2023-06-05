@@ -58,6 +58,7 @@ const CustomDrawerContent = props => {
   const navigation = useNavigation()
 
   const user = useSelector(state => state.User);
+  const cart = useSelector(state => state.Cart.cart)
 
   console.log('user: ', user)
 
@@ -143,7 +144,9 @@ const CustomDrawerContent = props => {
             <SidebarButton
               item={item}
               index={index}
+              showBadge={item?.showBadge || false}
               setActiveButton={setActiveButton}
+              cart={cart ?? []}
               activeButton={activeButton}
               navigation={props.navigation}
             />
@@ -171,6 +174,8 @@ const SidebarButton = ({
   item,
   index,
   navigation,
+  showBadge = false,
+  cart=[]
 }) => {
   return (
     <TouchableOpacity
@@ -231,6 +236,7 @@ const SidebarButton = ({
           transform: [{ rotate: '-6deg' }],
         }}
       />
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
       <Text
         style={{
           // textAlign: 'center',
@@ -243,6 +249,10 @@ const SidebarButton = ({
         }}>
         {item.screen}
       </Text>
+      {showBadge && cart.length !== 0 && <View style={styles.badgeContainer}>
+        <Text style={styles.badgeText}>{cart.length}</Text>
+      </View>}
+      </View>
     </TouchableOpacity>
   );
 };
@@ -253,6 +263,12 @@ const styles = StyleSheet.create({
     // backgroundColor: Colors.secondary,
   },
   image: { flex: 1 },
+  badgeContainer: {
+    backgroundColor: Colors.primary, 
+    borderRadius: 100,
+    marginLeft: 10,
+    justifyContent: 'center', alignItems: 'center', paddingVertical: 5, paddingHorizontal: 10},
+    badgeText: {color: 'white', fontSize: 12}
 });
 
 const sidebarData = [
@@ -276,10 +292,12 @@ const sidebarData = [
   {
     id: 5,
     screen: 'Cart',
+    showBadge: true,
   },
   { id: 6, screen: 'Payment Settings' },
   {
     id: 7,
     screen: 'Settings',
+    
   },
 ];

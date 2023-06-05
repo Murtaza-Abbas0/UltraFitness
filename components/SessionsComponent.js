@@ -42,7 +42,9 @@ const SessionCompo = ({
     <>
       {progresscompo && (
         <>
-          <View style={{ width: '100%', padding: 10 }}>
+          <TouchableOpacity 
+          onPress={onPress}
+          style={{ width: '100%', padding: 10 }}>
             <View
               style={[
                 styles.card,
@@ -106,7 +108,7 @@ const SessionCompo = ({
                 </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </>
       )}
       {mentorSuggestions && (

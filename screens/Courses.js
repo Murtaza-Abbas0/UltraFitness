@@ -136,6 +136,7 @@ const Courses = ({ navigation }) => {
                   progresstextColor={item.backgroundColor}
                   description={item.description}
                   image={item.image1}
+                  onPress={() => navigation.navigate('VideoScreen')}
                 />
               )}></FlatList>
           </View>
