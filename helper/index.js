@@ -7,12 +7,12 @@ export const addToCart = (cart = [], qty, productId = "", price, name, image, de
       let index = cart.findIndex(x => x.productId === productId)
       if (index !== -1) {
         cart[index]['quantity'] = qty;
-        cart[index]['price'] = qty * price;
+        cart[index]['total'] = qty * price;
         updateCart(cart);
         return;
       }
     }
-    cart.push({ price: qty * price, quantity: qty, productId, name, image, description })
+    cart.push({ total: qty * price, price, quantity: qty, productId, name, image, description })
     updateCart(cart)
   }
 

@@ -13,8 +13,7 @@ import Icon from 'react-native-vector-icons/Feather';
 
 const Account = ({navigation}) => {
   const [data, setData] = useState({
-    FirstName: '',
-    LastName: '',
+    Fullname: '',
     contactNo: '',
     email: '',
     password: '',
@@ -44,25 +43,13 @@ const Account = ({navigation}) => {
           </View>
 
           <View style={{paddingTop: 55}}>
-            <Text style={styles.text1}>First Name</Text>
+            <Text style={styles.text1}>Full name</Text>
             <InputCompo
               iconname1="user"
               placeholder="david@gmail.com"
-              text={data.contactNo}
+              text={data.Fullname}
               setText={setData}
-              formKey="email"
-              textColor={Colors.primary}
-              backgroundColor={'#FFFFFF'}
-            />
-
-            <Text style={styles.text1}>Last Name</Text>
-            <InputCompo
-              //   icon1={true}
-              iconname1="user"
-              placeholder="Michael"
-              text={data.fullName}
-              setText={setData}
-              formKey="fullName"
+              formKey="Fullname"
               textColor={Colors.primary}
               backgroundColor={'#FFFFFF'}
             />
@@ -92,19 +79,7 @@ const Account = ({navigation}) => {
               textColor={Colors.primary}
               backgroundColor={'#FFFFFF'}
             />
-            <View style={{marginVertical: 10}} />
-            <Text style={styles.text1}>password</Text>
-            <InputCompo
-              icon2
-              iconname2={'eye'}
-              iconname1="lock"
-              placeholder="Password"
-              text={data.password}
-              setText={setData}
-              formKey="password"
-              textColor={Colors.primary}
-              backgroundColor={'#FFFFFF'}
-            />
+            
             <View style={{marginVertical: 10}} />
           </View>
           <View

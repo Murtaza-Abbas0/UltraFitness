@@ -58,15 +58,19 @@ const ProductScreen = ({ navigation, route, index }) => {
   const onPressBuyNow = () => {
     const obj = {
       price: productData.price, quantity: count,
-      productId: productData._id, name: productData.name, image: productData.images[0], description: productData.description
+      total: productData.price * count,
+      productId: productData._id, 
+      name: productData.name, image: productData.images[0], description: productData.description
     }
+    debugger
     dispatch({ type: buyNow, data: { ...obj } })
-    dispatch({ type: setTotalPrice, data: productData.price })
-    navigation.navigate("GoogleMapsScreen")
+    // dispatch({ type: setTotalPrice, data: productData.price })
+    navigation.navigate("Cart")
   }
 
   const updateCart = arr => {
     dispatch({ type: addItem, data: [...arr] })
+
   }
   return (
     <>
