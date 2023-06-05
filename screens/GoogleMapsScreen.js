@@ -19,6 +19,28 @@ import AlertMessage from "../components/AlertMessage";
 const GoogleMapsScreen = ({ navigation, route }) => {
 
   // let { orderData } = route?.params
+  const cart = useSelector(x => x.Cart.cart)
+  const instantPurchase = useSelector(x => x.Cart.instantPurchase)
+
+  console.log('cart: ', cart)
+
+  let totalPrice = 0
+
+  const CalculateTotal = () => {
+    if (cart.length !== 0 || Object.keys(instantPurchase).length !== 0) {
+      if (Object.keys(instantPurchase).length !== 0) {
+        totalPrice = instantPurchase.total;
+      } else if (cart.length !== 0) {
+        const listOfTotal = cart.map((val, index) => val.total)
+        totalPrice = listOfTotal.reduce(
+          (accumulator, currentValue) => accumulator + currentValue,
+          0
+        )
+      }
+    }
+    return totalPrice;
+  }
+
   let tempObject = {}
 
   const user = useSelector(state => state.User);
@@ -48,24 +70,24 @@ const GoogleMapsScreen = ({ navigation, route }) => {
   });
   const [cardDetails, setCardDetails] = useState()
 
-  // const getOrderObject = () => {
-  //   tempObject = {
-  //     orderData,
-  //     "totalPrice": orderData[0]?.price,
-  //     "fullName": data.fullName,
-  //     "address": data.address,
-  //     "zipCode": data.zipCode,
-  //     "city": data.city,
-  //     "state": data.state,
-  //     "phoneNumber": data.contactNo,
-  //     "email": data.email,
-  //     "gender": data.gender
-  //   }
+  const getOrderObject = () => {
+    tempObject = {
+      cart,
+      "totalPrice": CalculateTotal(),
+      "fullName": data.fullName,
+      "address": data.address,
+      "zipCode": data.zipCode,
+      "city": data.city,
+      "state": data.state,
+      "phoneNumber": data.contactNo,
+      "email": data.email,
+      "gender": data.gender
+    }
 
-  //   console.log('tempObject: ', tempObject)
-  //   return
-  //   navigation.navigate('CheckoutCart')
-  // }
+    console.log('tempObject: ', tempObject)
+    // return
+    navigation.navigate('CheckoutCart', { tempObject: tempObject })
+  }
 
   const onChangeHandler = (value, name) => {
     setData(prevData => ({
@@ -227,7 +249,7 @@ const GoogleMapsScreen = ({ navigation, route }) => {
             buttonText="Continue"
             buttonColor={Colors.tertiary}
             textColor={Colors.secondary}
-            onPress={() => onPressContinue()}
+            onPress={() => getOrderObject()}
             height={WIDTH <= 375 ? 55 : 55}
             width={WIDTH <= 375 ? 125 : 175}
             marginBottom={'20%'}

@@ -7,29 +7,53 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Colors} from '../assets/constants/Colors';
-import {HEIGHT, WIDTH} from '../assets/constants/Dimensions';
+import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from '../assets/constants/Colors';
+import { HEIGHT, WIDTH } from '../assets/constants/Dimensions';
 import Table from '../components/TableData';
 import ButtonComponent from '../components/Button';
-import {TouchableRipple} from 'react-native-paper';
-import {BackSvg} from '../assets/svgs/HeaderSvgs';
+import { TouchableRipple } from 'react-native-paper';
+import { BackSvg } from '../assets/svgs/HeaderSvgs';
 import Radiobutton from '../components/Radiobutton';
-import {Fonts} from '../assets/constants/Fonts';
+import { Fonts } from '../assets/constants/Fonts';
 import Icon from 'react-native-vector-icons/Feather';
 import Header from '../components/Header';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import Assets from '../assets';
+import { useSelector } from 'react-redux';
 
-const CheckoutCart = ({navigation}) => {
+const CheckoutCart = ({ navigation, route }) => {
   const [checked, setChecked] = useState();
+  let { tempObject } = route?.params
+
+  console.log(tempObject)
+
+  const cart = useSelector(x => x.Cart.cart)
+  const instantPurchase = useSelector(x => x.Cart.instantPurchase)
+
+  const CalculateTotal = () => {
+    let totalPrice = 0;
+    if (cart.length !== 0 || Object.keys(instantPurchase).length !== 0) {
+      if (Object.keys(instantPurchase).length !== 0) {
+        totalPrice = instantPurchase.total;
+      } else if (cart.length !== 0) {
+        const listOfTotal = cart.map((val, index) => val.total)
+        totalPrice = listOfTotal.reduce(
+          (accumulator, currentValue) => accumulator + currentValue,
+          0
+        )
+      }
+    }
+    return <Text style={styles.text}>{`$${totalPrice}.00`}</Text>
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
         bounces={false}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{flexGrow: 1}}>
+        contentContainerStyle={{ flexGrow: 1 }}>
         <View
           style={{
             paddingHorizontal: 15,
@@ -72,7 +96,7 @@ const CheckoutCart = ({navigation}) => {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium
             pretium tempor.
           </Text>
-          <View style={{marginTop: 15}} />
+          <View style={{ marginTop: 15 }} />
           <Text
             style={[
               styles.text,
@@ -84,34 +108,35 @@ const CheckoutCart = ({navigation}) => {
             ]}>
             Delivery Address
           </Text>
-          <View style={{marginTop: 5, flexDirection: 'row'}}>
-            <Radiobutton
+          <View style={{ marginTop: 5, flexDirection: 'row' }}>
+            {/* <Radiobutton
               checked={checked}
               setChecked={setChecked}
               onPress={() => setChecked(!checked)}
-            />
-            <View style={{flex: 1}}>
-              <Text style={[styles.nametext]}>Annie Smith</Text>
+            /> */}
+            <View style={{ flex: 1 }}>
+              <Text style={[styles.nametext]}>{tempObject?.fullName}</Text>
               <Text numberOfLines={2} style={[styles.nametext]}>
-                example_mail@.com
+                {tempObject?.email}
               </Text>
               <Text numberOfLines={2} style={[styles.nametext]}>
-                1 Chapel Hill Heswall{'\n'}BOURNEMOUTH BH1 1AA
+                {/* 1 Chapel Hill Heswall{'\n'}BOURNEMOUTH BH1 1AA */}
+                {tempObject?.address}
               </Text>
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => navigation.navigate('GoogleMapsScreen')}
               style={{}}>
               <Text
                 numberOfLines={2}
                 style={[
                   styles.nametext,
-                  {color: Colors.cards.GreyText, fontSize: 14},
+                  { color: Colors.cards.GreyText, fontSize: 14 },
                 ]}>
                 edit
-                <Icon name="edit" size={14} style={{paddingLeft: 5}} />
+                <Icon name="edit" size={14} style={{ paddingLeft: 5 }} />
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <Text
             style={[
@@ -126,20 +151,20 @@ const CheckoutCart = ({navigation}) => {
             ]}>
             Payment Method
           </Text>
-          <View style={{flexDirection: 'row'}}>
+          {/* <View style={{ flexDirection: 'row' }}>
             <Icon
               name="check-square"
               size={14}
-              style={{paddingTop: 11, paddingRight: 5}}
+              style={{ paddingTop: 11, paddingRight: 5 }}
             />
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
               <Text
                 numberOfLines={2}
-                style={[styles.nametext, {color: '#000'}]}>
+                style={[styles.nametext, { color: '#000' }]}>
                 use this card
               </Text>
-            </View>
-            <TouchableOpacity
+            </View> */}
+          {/* <TouchableOpacity
               onPress={() => navigation.navigate('GetCardsScreen')}
               style={{}}>
               <Text
@@ -148,17 +173,17 @@ const CheckoutCart = ({navigation}) => {
                 Add new
                 <Icon name="plus" size={14} style={{paddingLeft: 5}} />
               </Text>
-            </TouchableOpacity>
-          </View>
+            </TouchableOpacity> */}
+          {/* </View> */}
           <Text numberOfLines={2} style={[styles.nametext]}>
             <Image
               source={Assets.logos.cardimg}
-              style={{width: 25, height: 25, paddingHorizontal: 5}}
+              style={{ width: 25, height: 25, paddingHorizontal: 5 }}
             />
             42201-336-2102-5214
           </Text>
         </View>
-        <View style={[styles.line, {marginTop: 15}]} />
+        <View style={[styles.line, { marginTop: 15 }]} />
         <View
           style={{
             flexDirection: 'row',
@@ -167,10 +192,10 @@ const CheckoutCart = ({navigation}) => {
           }}>
           <Text style={styles.text}>Summary</Text>
         </View>
-        <View style={{paddingHorizontal: 25, paddingTop: 5}}>
+        <View style={{ paddingHorizontal: 25, paddingTop: 5 }}>
           <Table />
         </View>
-        <View style={[styles.line, {width: '80%'}]} />
+        <View style={[styles.line, { width: '80%' }]} />
         <View
           style={{
             flexDirection: 'row',
@@ -178,7 +203,8 @@ const CheckoutCart = ({navigation}) => {
             paddingHorizontal: 25,
           }}>
           <Text style={styles.text}>Total Amount:</Text>
-          <Text style={styles.text}>$215.00</Text>
+          {/* <Text style={styles.text}></Text> */}
+          <CalculateTotal />
         </View>
         <View
           style={{
@@ -201,7 +227,7 @@ const CheckoutCart = ({navigation}) => {
     </SafeAreaView>
   );
 };
-const HeaderComponent = ({navigation}) => {
+const HeaderComponent = ({ navigation }) => {
   return (
     <View style={{}}>
       <TouchableRipple
