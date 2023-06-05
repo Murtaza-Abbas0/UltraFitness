@@ -5,4 +5,5 @@ export const url = {
     getMyOrders: '/users/my-orders',
     getAllProducts: '/products',
     attachCard: 'users/attach-payment-method',
+    createOrder: 'users/create-order',
 }

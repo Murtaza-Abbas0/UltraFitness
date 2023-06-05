@@ -83,7 +83,8 @@ const GoogleMapsScreen = ({ navigation, route }) => {
       "state": data.state,
       "phoneNumber": data.contactNo,
       "email": data.email,
-      "gender": data.gender
+      "gender": data.gender,
+      "pmId": id
     }
 
     console.log('tempObject: ', tempObject)

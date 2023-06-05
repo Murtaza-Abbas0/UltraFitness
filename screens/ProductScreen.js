@@ -65,7 +65,7 @@ const ProductScreen = ({ navigation, route, index }) => {
     }
     // debugger
     dispatch({ type: buyNow, data: { ...obj } })
-    navigation.navigate("Cart")
+    navigation.navigate("GetCardsScreen")
     // dispatch({ type: setTotalPrice, data: productData.price })
   }
 

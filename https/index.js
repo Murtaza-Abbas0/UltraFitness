@@ -26,6 +26,8 @@ const httpGetRequest = async (url, header, cb) => {
 
 export const LoginAuth = (data={}, header={}, cb)  => httpPostRequest(url.login, data, header, cb)
 
+export const CreateOrder = (data={}, header={}, cb)  => httpPostRequest(url.createOrder, data, header, cb)
+
 export const CreateAccount = (data={}, header={}, cb) => httpPostRequest(url.signup, data, header, cb)
 
 export const Logout = (data={}, header={}, cb) => httpPostRequest(url.logout, data, header, cb)

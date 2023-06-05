@@ -22,6 +22,8 @@ import Header from '../components/Header';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Assets from '../assets';
 import { useSelector } from 'react-redux';
+import { CreateOrder } from '../https';
+import AlertMessage from '../components/AlertMessage';
 
 const CheckoutCart = ({ navigation, route }) => {
   const [checked, setChecked] = useState();
@@ -48,6 +50,18 @@ const CheckoutCart = ({ navigation, route }) => {
       }
     }
     return <Text style={styles.text}>{`$${totalPrice}.00`}</Text>
+  }
+
+  const sendOrderToServer = () => {
+
+    if (tempObject !== []) {
+      CreateOrder(tempObject, {}, (response) => {
+        console.log("response: ", response?.data)
+        navigation.navigate('CheckoutOrder', { tempObject: tempObject })
+      })
+    } else {
+      AlertMessage.showMessage("Cart is empty!")
+    }
   }
 
   return (
@@ -220,7 +234,7 @@ const CheckoutCart = ({ navigation, route }) => {
             buttonText="Proceed to Checkout"
             buttonColor={Colors.tertiary}
             textColor={Colors.secondary}
-            onPress={() => navigation.navigate('CheckoutOrder')}
+            onPress={() => sendOrderToServer()}
             height={WIDTH <= 375 ? 55 : 55}
             width={WIDTH <= 323 ? 260 : 300}
           />
