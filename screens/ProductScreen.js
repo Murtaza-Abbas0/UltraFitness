@@ -56,16 +56,17 @@ const ProductScreen = ({ navigation, route, index }) => {
   };
 
   const onPressBuyNow = () => {
+    console.log('hey')
     const obj = {
       price: productData.price, quantity: count,
       total: productData.price * count,
       productId: productData._id, 
       name: productData.name, image: productData.images[0], description: productData.description
     }
-    debugger
+    // debugger
     dispatch({ type: buyNow, data: { ...obj } })
-    // dispatch({ type: setTotalPrice, data: productData.price })
     navigation.navigate("Cart")
+    // dispatch({ type: setTotalPrice, data: productData.price })
   }
 
   const updateCart = arr => {

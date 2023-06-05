@@ -76,23 +76,23 @@ const GetCardsScreen = ({ navigation }) => {
           bounces={false}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1 }}> */}
-        {/* <View style={{ flex: 1, height: 200 }}>
-            <View
-              style={{
-                paddingHorizontal: 15,
-                marginTop: 25,
+        <View style={{ flex: 1, height: 200 }}>
+          <View
+            style={{
+              paddingHorizontal: 15,
+              marginTop: 25,
 
-                // backgroundColor: 'green',
-              }}> */}
-        <HeaderComponent navigation={navigation} />
-        {/* </View> */}
-        <View style={{ flex: 1 }} >
-          <FlatList
-            data={data}
-            keyExtractor={(item) => String(item?.id)}
-            renderItem={({ item }) => <GetCardsRenderItem item={item} />}
-          />
-          {/* </View> */}
+              // backgroundColor: 'green',
+            }}>
+            <HeaderComponent navigation={navigation} />
+          </View>
+          <View style={{ flex: 1 }} >
+            <FlatList
+              data={data}
+              keyExtractor={(item) => String(item?.id)}
+              renderItem={({ item }) => <GetCardsRenderItem item={item} />}
+            />
+          </View>
         </View>
         {/* </ScrollView > */}
       </SafeAreaView >

@@ -19,7 +19,7 @@ export default (state = initialState, action) => {
         case buyNowRemove:
             return { ...state, instantPurchase: {} }
         case setTotalPrice:
-            debugger
+            // debugger
             return { ...state, totalPrice: action.data }
         default:
             return state

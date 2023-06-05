@@ -22,9 +22,9 @@ const CartScreen = ({navigation}) => {
   const cart = useSelector(x => x.Cart.cart)
   const instantPurchase = useSelector(x => x.Cart.instantPurchase)
   
-  debugger
+  // debugger
   console.log(instantPurchase)
-  debugger
+  // debugger
   const [check, setChecked] = useState(false);
   const [items, setItems] = useState([
     {
@@ -67,7 +67,7 @@ const CartScreen = ({navigation}) => {
     );
   };
   const removeBuyNowCart = () => {
-    debugger
+    // debugger
     dispatch({ type: buyNowRemove })
     hardNavigation(navigation, "Home")
   }
