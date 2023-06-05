@@ -11,7 +11,7 @@ const DummyCard = ({ name, number, expiry }) => {
     >
       <Svg width="300" height="200">
         {/* <Rect x="10" y="10" width="280" height="180" fill="white" rx="12" ry="12" /> */}
-        <SvgText x="20" y="40" fill="black" fontSize="18">{name}</SvgText>
+        {/* <SvgText x="20" y="40" fill="black" fontSize="18">{name}</SvgText> */}
         <SvgText x="20" y="70" fill="black" fontSize="14">**** **** **** {number}</SvgText>
         <SvgText x="20" y="100" fill="black" fontSize="14">{expiry}</SvgText>
         <SvgText x="200" y="150" fill="black" fontSize="14">Mastercard</SvgText>

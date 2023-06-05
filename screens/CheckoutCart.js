@@ -25,10 +25,12 @@ import { useSelector } from 'react-redux';
 
 const CheckoutCart = ({ navigation, route }) => {
   const [checked, setChecked] = useState();
-  let { tempObject } = route?.params
+  let { tempObject, cardNumber, id } = route?.params
 
   console.log(tempObject)
 
+  console.log(cardNumber)
+  console.log(id)
   const cart = useSelector(x => x.Cart.cart)
   const instantPurchase = useSelector(x => x.Cart.instantPurchase)
 
@@ -180,7 +182,7 @@ const CheckoutCart = ({ navigation, route }) => {
               source={Assets.logos.cardimg}
               style={{ width: 25, height: 25, paddingHorizontal: 5 }}
             />
-            42201-336-2102-5214
+            ****-****-****-{cardNumber}
           </Text>
         </View>
         <View style={[styles.line, { marginTop: 15 }]} />

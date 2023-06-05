@@ -18,7 +18,9 @@ import AlertMessage from "../components/AlertMessage";
 
 const GoogleMapsScreen = ({ navigation, route }) => {
 
-  // let { orderData } = route?.params
+  let { id, cardNumber } = route?.params
+
+  console.log(cardNumber);
   const cart = useSelector(x => x.Cart.cart)
   const instantPurchase = useSelector(x => x.Cart.instantPurchase)
 
@@ -86,7 +88,7 @@ const GoogleMapsScreen = ({ navigation, route }) => {
 
     console.log('tempObject: ', tempObject)
     // return
-    navigation.navigate('CheckoutCart', { tempObject: tempObject })
+    navigation.navigate('CheckoutCart', { tempObject: tempObject, id: id, cardNumber: cardNumber })
   }
 
   const onChangeHandler = (value, name) => {
@@ -234,7 +236,7 @@ const GoogleMapsScreen = ({ navigation, route }) => {
 
             <ButtonComponent
               borderRadius={14}
-              buttonText="Add Card"
+              buttonText="Select Card"
               buttonColor={Colors.tertiary}
               textColor={Colors.secondary}
               onPress={() => onPressAddCard()}
