@@ -62,7 +62,7 @@ const ProductScreen = ({ navigation, route, index }) => {
     }
     dispatch({ type: buyNow, data: { ...obj } })
     dispatch({ type: setTotalPrice, data: productData.price })
-    // navigation.navigate("GoogleMapsScreen")
+    navigation.navigate("GoogleMapsScreen")
   }
 
   const updateCart = arr => {

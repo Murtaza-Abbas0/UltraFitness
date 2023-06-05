@@ -18,13 +18,12 @@ import AlertMessage from "../components/AlertMessage";
 
 const GoogleMapsScreen = ({ navigation, route }) => {
 
-  const stripe = useStripe();
-  let { orderData } = route?.params
+  // let { orderData } = route?.params
   let tempObject = {}
 
   const user = useSelector(state => state.User);
 
-  console.log('orderData: ', orderData)
+  // console.log('orderData: ', orderData)
 
   const [checked, setChecked] = useState();
   const [data, setData] = useState({
@@ -49,24 +48,24 @@ const GoogleMapsScreen = ({ navigation, route }) => {
   });
   const [cardDetails, setCardDetails] = useState()
 
-  const getOrderObject = () => {
-    tempObject = {
-      orderData,
-      "totalPrice": orderData[0]?.price,
-      "fullName": data.fullName,
-      "address": data.address,
-      "zipCode": data.zipCode,
-      "city": data.city,
-      "state": data.state,
-      "phoneNumber": data.contactNo,
-      "email": data.email,
-      "gender": data.gender
-    }
+  // const getOrderObject = () => {
+  //   tempObject = {
+  //     orderData,
+  //     "totalPrice": orderData[0]?.price,
+  //     "fullName": data.fullName,
+  //     "address": data.address,
+  //     "zipCode": data.zipCode,
+  //     "city": data.city,
+  //     "state": data.state,
+  //     "phoneNumber": data.contactNo,
+  //     "email": data.email,
+  //     "gender": data.gender
+  //   }
 
-    console.log('tempObject: ', tempObject)
-    return
-    navigation.navigate('CheckoutCart')
-  }
+  //   console.log('tempObject: ', tempObject)
+  //   return
+  //   navigation.navigate('CheckoutCart')
+  // }
 
   const onChangeHandler = (value, name) => {
     setData(prevData => ({

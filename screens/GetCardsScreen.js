@@ -6,6 +6,7 @@ import {
   Image,
   Modal,
   TouchableWithoutFeedback,
+  FlatList
 } from 'react-native';
 import React, { useState, useCallback } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -23,6 +24,7 @@ import { getCards } from '../https';
 import { useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import AlertMessage from '../components/AlertMessage';
+import GetCardsRenderItem from '../components/GetCardsRenderItem'
 
 const GetCardsScreen = ({ navigation }) => {
 
@@ -32,14 +34,7 @@ const GetCardsScreen = ({ navigation }) => {
 
   const [checked, setChecked] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-  const [data, setData] = useState({
-    fullName: '',
-    contactNo: '',
-    gender: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+  const [data, setData] = useState([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -63,7 +58,8 @@ const GetCardsScreen = ({ navigation }) => {
     // const header = {};
 
     getCards(data, (response) => {
-      console.log('response: ', response?.data?.data);
+      // console.log('response: ', response?.data?.data);
+      setData(response?.data?.data)
       if (response?.data?.status == 'success' && response?.data?.data !== []) {
         AlertMessage.showMessage('Card List Fetched Successfully')
       } else if (response?.data?.status == 'success' && response?.data?.data == []) {
@@ -76,222 +72,30 @@ const GetCardsScreen = ({ navigation }) => {
     <>
       <SafeAreaView style={styles.container}>
 
-        <ScrollView
+        {/* <ScrollView
           bounces={false}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flexGrow: 1 }}>
-          <View style={{ flex: 1, height: 200 }}>
+          contentContainerStyle={{ flexGrow: 1 }}> */}
+        {/* <View style={{ flex: 1, height: 200 }}>
             <View
               style={{
                 paddingHorizontal: 15,
                 marginTop: 25,
 
                 // backgroundColor: 'green',
-              }}>
-              <HeaderComponent navigation={navigation} />
-            </View>
-            <View style={{}}>
-              <View
-                style={{
-                  paddingTop: 15,
-                  height: '40%',
-                  marginTop: 25,
-                  flexDirection: 'row',
-                  paddingHorizontal: 15,
-                }}>
-                <Checkbox
-                  uncheckedColor={Colors.primary}
-                  size={12}
-                  color={Colors.primary}
-                  status={checked ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    setChecked(!checked);
-                  }}
-                />
-                <Image
-                  source={Assets.ProfileImages.card3}
-                  resizeMode="contain"
-                  style={{
-                    height:
-                      WIDTH < 390 && WIDTH >= 375
-                        ? 240
-                        : WIDTH < 375
-                          ? 240
-                          : 240,
-                    position: 'absolute',
-                    top:
-                      WIDTH < 390 && WIDTH >= 375
-                        ? -24
-                        : WIDTH < 375
-                          ? -24
-                          : -16,
-                    left:
-                      WIDTH < 390 && WIDTH >= 375
-                        ? -170
-                        : WIDTH < 375
-                          ? -365
-                          : -350,
-                    // right:
-                    //   WIDTH < 390 && WIDTH >= 375 ? -170 : WIDTH < 375 ? -320 : -390,
-                    zIndex: 10,
-                  }}
-                />
-              </View>
-              <View
-                style={{
-                  // marginTop: 25,
-                  flexDirection: 'row',
-                  paddingHorizontal: 15,
-                  paddingTop: 25,
-                }}>
-                <Checkbox
-                  uncheckedColor={Colors.primary}
-                  size={12}
-                  color={Colors.primary}
-                  status={checked ? 'checked' : 'unchecked'}
-                  onPress={() => {
-                    setChecked(!checked);
-                  }}
-                />
-                <Image
-                  source={Assets.ProfileImages.card3}
-                  resizeMode="contain"
-                  style={{
-                    height:
-                      WIDTH < 390 && WIDTH >= 375
-                        ? 195
-                        : WIDTH < 375
-                          ? 240
-                          : 240,
-                    position: 'absolute',
-                    top: WIDTH < 390 && WIDTH >= 375 ? 5 : WIDTH < 375 ? 5 : 5,
-                    left:
-                      WIDTH < 390 && WIDTH >= 375
-                        ? -170
-                        : WIDTH < 375
-                          ? -365
-                          : -350,
-                    // right:
-                    //   WIDTH < 390 && WIDTH >= 375 ? -170 : WIDTH < 375 ? -320 : -390,
-                    zIndex: 10,
-                  }}
-                />
-              </View>
-            </View>
-            <View style={styles.modalView}>
-              <Modal
-                style={{}}
-                // transparent={true}
-                // animationType="slide"
-                visible={modalVisible}
-                onRequestClose={() => {
-                  // Alert.alert('Modal has been closed.');
-                  setModalVisible(false);
-                }}>
-                <View
-                  style={{
-                    marginVertical: 15,
-                    backgroundColor: '#707070',
-                    opacity: 0.22,
-                    width: '30%',
-                    height: 2,
-                    alignSelf: 'center',
-                  }}
-                />
-                <View
-                  style={{
-                    marginTop: 15,
-                    // backgroundColor: 'yellow',
-                    width: '90%',
-                  }}>
-                  <Input
-                    placeholder="Full Name"
-                    text={data.fullName}
-                    setText={setData}
-                    formKey="fullName"
-                    textColor={Colors.tertiary}
-                    backgroundColor={'#ffffff'}
-                  />
-                </View>
-                <View
-                  style={{
-                    paddingTop: 10,
-                    // backgroundColor: 'yellow',
-                    width: '90%',
-                  }}>
-                  <Input
-                    placeholder="Card Number"
-                    text={data.fullName}
-                    setText={setData}
-                    formKey="fullName"
-                    textColor={Colors.tertiary}
-                    backgroundColor={'#ffffff'}
-                  />
-                </View>
-                <View
-                  style={{
-                    paddingTop: 10,
-                    // backgroundColor: 'yellow',
-                    width: '90%',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
-                  <Input
-                    placeholder="Expiry MM/YY"
-                    text={data.fullName}
-                    setText={setData}
-                    formKey="fullName"
-                    textColor={Colors.tertiary}
-                    backgroundColor={'#ffffff'}
-                  />
-                  <Input
-                    placeholder="CVV(3 Digits)"
-                    text={data.fullName}
-                    setText={setData}
-                    formKey="fullName"
-                    textColor={Colors.tertiary}
-                    backgroundColor={'#ffffff'}
-                  />
-                </View>
-                <View
-                  style={{
-                    paddingTop: 10,
-                    // backgroundColor: 'yellow',
-                    width: '90%',
-                  }}>
-                  <Input
-                    placeholder="Card Holder Name"
-                    text={data.fullName}
-                    setText={setData}
-                    formKey="fullName"
-                    textColor={Colors.tertiary}
-                  />
-                </View>
-                <View
-                  style={{
-                    paddingTop: 15,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: 10,
-                  }}>
-                  <ButtonComponent
-                    icon1
-                    borderRadius={14}
-                    buttonText="Save"
-                    buttonColor={Colors.tertiary}
-                    textColor={Colors.secondary}
-                    onPress={() => setModalVisible(false)}
-                    // onPress={() => navigation.navigate('GoogleMapsScreen')}
-                    height={WIDTH <= 375 ? 55 : 55}
-                    width={WIDTH <= 323 ? 260 : 255}
-                  />
-                </View>
-
-              </Modal>
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+              }}> */}
+        <HeaderComponent navigation={navigation} />
+        {/* </View> */}
+        <View style={{ flex: 1 }} >
+          <FlatList
+            data={data}
+            keyExtractor={(item) => String(item?.id)}
+            renderItem={({ item }) => <GetCardsRenderItem item={item} />}
+          />
+          {/* </View> */}
+        </View>
+        {/* </ScrollView > */}
+      </SafeAreaView >
     </>
   );
 };
