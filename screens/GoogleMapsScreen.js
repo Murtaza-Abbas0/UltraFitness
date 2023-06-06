@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity, PermissionsAndroid } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../assets/constants/Colors';
@@ -15,10 +15,51 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import PaymentMethod from '../components/PaymentMethod';
 import AlertMessage from "../components/AlertMessage";
+import Geolocation from '@react-native-community/geolocation';
 
 const GoogleMapsScreen = ({ navigation, route }) => {
 
   let { id, cardNumber } = route?.params
+
+  const [initialRegion, setInitialRegion] = useState(null);
+
+  useEffect(() => {
+    // Get the user's current location
+
+    const requestLocationPermission = async () => {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          getCurrentLocation();
+        } else {
+          console.log('Location permission denied');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const getCurrentLocation = () => {
+      Geolocation.getCurrentPosition(
+        position => {
+          const { latitude, longitude } = position.coords;
+          setInitialRegion({
+            latitude,
+            longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          });
+        },
+        error => {
+          console.error(error);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      );
+    };
+    requestLocationPermission()
+  }, []);
 
   console.log(cardNumber);
   const cart = useSelector(x => x.Cart.cart)
@@ -108,6 +149,10 @@ const GoogleMapsScreen = ({ navigation, route }) => {
     AlertMessage.showMessage('Working on it!')
   }
 
+  const getUserLocation = () => {
+    Geolocation.getCurrentPosition(info => console.log(info));
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -124,12 +169,21 @@ const GoogleMapsScreen = ({ navigation, route }) => {
           />
           {/* Cards start */}
           <View style={styles.Mapcontainer}>
-            <MapView
-              style={styles.map}
-              region={region}
-              onRegionChange={setRegion}>
-              <Marker coordinate={{ latitude: 37.78825, longitude: -122.4324 }} />
-            </MapView>
+            {initialRegion &&
+              <MapView
+                style={styles.map}
+                initialRegion={initialRegion}
+                scrollEnabled={false}
+                zoomEnabled={false}
+              >
+                <Marker
+                  coordinate={{
+                    latitude: initialRegion.latitude,
+                    longitude: initialRegion.longitude,
+                  }}
+                />
+              </MapView>
+            }
           </View>
           <View style={{ marginTop: 25 }} />
           <Input
