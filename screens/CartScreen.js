@@ -239,7 +239,7 @@ const CartScreen = ({navigation}) => {
               buttonText="Proceed to Checkout"
               buttonColor={Colors.tertiary}
               textColor={Colors.secondary}
-              onPress={() => navigation.navigate('GoogleMapsScreen')}
+              onPress={() => navigation.navigate('GetCardsScreen')}
               // onPress={() => navigation.navigate('GoogleMapsScreen')}
               height={WIDTH <= 375 ? 55 : 55}
               width={WIDTH <= 323 ? 260 : 300}
